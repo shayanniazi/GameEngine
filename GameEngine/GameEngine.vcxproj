@@ -22,12 +22,12 @@
     <ClCompile Include="CoreEngine.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="System.cpp" />
+    <ClCompile Include="SubSystems.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Display.h" />
-    <ClInclude Include="System.h" />
+    <ClInclude Include="SubSystems.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AC473835-AE69-4BAC-A77A-69BFD0764989}</ProjectGuid>

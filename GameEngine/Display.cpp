@@ -1,5 +1,7 @@
 #include "Display.h"
 
+Display* Display::instance = nullptr;
+
 Display::Display()
 {
 	createWindow();
@@ -8,6 +10,19 @@ Display::Display()
 Display::~Display()
 {
 	destroyWindow();
+	//delete instance;
+}
+
+SDL_Window* Display::getWindowHandle()
+{
+	return window;
+}
+
+Display* Display::getDisplay()
+{
+	if (instance == nullptr)
+		instance = new Display();
+	return instance;
 }
 
 void Display::createWindow()
