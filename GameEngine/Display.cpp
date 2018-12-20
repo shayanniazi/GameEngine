@@ -18,7 +18,7 @@ SDL_Window* Display::getWindowHandle()
 	return window;
 }
 
-Display* Display::getDisplay()
+Display* Display::getInstance()
 {
 	if (instance == nullptr)
 		instance = new Display();

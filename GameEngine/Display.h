@@ -4,8 +4,8 @@
 class Display
 {
 public:
-	static Display* getDisplay();
 	~Display();
+	static Display* getInstance();
 	SDL_Window* getWindowHandle();
 
 private:

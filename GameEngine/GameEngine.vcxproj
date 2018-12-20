@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="CoreEngine.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SubSystems.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Display.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="SubSystems.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

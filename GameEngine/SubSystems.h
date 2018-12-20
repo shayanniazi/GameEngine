@@ -5,7 +5,8 @@ class SubSystems
 {
 public:
 	~SubSystems();
-	static SubSystems* getSubSystems();
+	static SubSystems* getInstance();
+
 private:
 	SubSystems();
 	static SubSystems* instance;

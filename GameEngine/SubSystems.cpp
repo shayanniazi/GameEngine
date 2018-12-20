@@ -14,7 +14,7 @@ SubSystems::~SubSystems()
 	//delete instance;
 }
 
-SubSystems* SubSystems::getSubSystems()
+SubSystems* SubSystems::getInstance()
 {
 	if (instance == nullptr)
 		instance = new SubSystems();
