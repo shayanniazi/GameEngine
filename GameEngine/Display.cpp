@@ -34,4 +34,5 @@ void Display::createWindow()
 void Display::destroyWindow()
 {
 	SDL_DestroyWindow(window);
+	window = nullptr;
 }

@@ -1,7 +1,5 @@
 #include "SubSystems.h"
 
-//NOTE: Make this a singleton class
-
 SubSystems* SubSystems::instance = nullptr;
 
 SubSystems::SubSystems()
