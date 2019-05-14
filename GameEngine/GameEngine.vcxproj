@@ -39,6 +39,7 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyCode.h" />
+    <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="SubSystems.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>

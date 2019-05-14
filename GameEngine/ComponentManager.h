@@ -21,28 +21,26 @@ public:
 			std::cout << "component DB was empty, so new component of type: " << typeid(componentType).name() << " was created" << std::endl;
 			newComponentDBEntry<componentType>(component);
 		}
-		//if the componentDatabase already has stored collection of component vector pointers inside it
+		//if the componentDatabase already has stored collection of component map pointers inside it
 		else
 		{
 			bool componentTypeFound = false;
-			boost::container::flat_map<void*, size_t>::iterator iter;
 
 			//search each vector from vector database (components vector) to see if it contains the required component type
-			for (iter = componentDatabase.begin(); iter != componentDatabase.end(); iter++)
+			for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
 			{
 				//if type matches, then insert the passed in component parameter to the vector database's appropriate index
-				if (iter->second == typeid(*component).hash_code())
+				if (i->second == typeid(*component).hash_code())
 				{
 					//since we now know the type of the component is componentType
-					std::vector<componentType>* extractedVector = (std::vector<componentType>*) iter->first;
+					boost::container::flat_map<componentType**, componentType>* extractedMap = (boost::container::flat_map<componentType**, componentType>*) i->first;
 					//get access to the vector pointer from the pointer database now
-					std::vector<componentType**>* extractedPtrVector = nullptr;//(std::vector<componentType**>*) pointerDatabase.at(i);
 
 					//loop through the extracted vector to make sure if same address component hasnt been inserted
 					//if it already exists in extracted vector, then simply return from function
-					for (size_t j = 0; j < extractedVector->size(); j++)
+					for (boost::container::flat_map<componentType**, componentType>::iterator j = extractedMap->begin(); j != extractedMap->end(); j++)
 					{
-						if (&(extractedVector->at(j)) == component)
+						if (&(j->second) == component)
 						{
 							std::cout << "cannot re-insert component of type: " << typeid(componentType).name() << " as its address already exists in database, returning..." << std::endl;
 							return;
@@ -53,18 +51,16 @@ public:
 					componentTypeFound = true;
 
 					//push copy of component into array (will retarget original pointer to this copied component below)
-					extractedVector->push_back(*component);
-					extractedPtrVector->push_back(&component);
+					extractedMap->insert(std::pair<componentType**, componentType>(&component, *component));
 
-					//get pointer to newly inserted component (retarget the pointer)
-					componentType* extractedLastComp = &(extractedVector->at(extractedVector->size() - 1));
+					componentType* extractedComponent = &(extractedMap->at(&component));
 
 					//prevent memory leaks by free-ing mem allocated by user, and retargetting pointer to the copy inside vector
 					//so that user uses extractedVec copy instead
 					delete component;
 
 					//retarget original component ptr to above pointer
-					component = extractedLastComp;
+					component = extractedComponent;
 					std::cout << "component of type: " << typeid(componentType).name() << " successfully inserted into Database" << std::endl;
 					break;
 				}
@@ -83,41 +79,24 @@ private:
 	template<typename componentType>
 	void newComponentDBEntry(componentType*& component)
 	{
-		//new code here
-		boost::container::flat_map<componentType**, componentType>* compMap = new boost::container::flat_map< componentType**, componentType>();
-		compMap->reserve(12);
-		compMap->insert(std::pair<componentType**, componentType>(&component, *component));
-		boost::container::flat_map<void*, size_t>::iterator iter = compMap->begin();
-
-		component = &(compMap->begin()->second);
-
-		//new code end
-
-
 		//create new space on heap for component as well as componentType** to hold the pointers addresses. Also, reserve space for vectors
-		std::vector<componentType>* compVec = new std::vector<componentType>();
-		std::vector<componentType**>* compPtrAddresses = new std::vector<componentType**>();
-		compVec->reserve(maxEntities);
-		compPtrAddresses->reserve(maxEntities);
+		boost::container::flat_map<componentType**, componentType>* compMap = new boost::container::flat_map< componentType**, componentType>();
+		compMap->reserve(maxEntities);
 
-		//insert dereferenced componentType into allocated space (will create a copy of original content)
-		compVec->push_back(*component);
-		compPtrAddresses->push_back(&component);
+		//insert dereferenced componentType into allocated space (will create a copy of original content), as well as insert handle to pointer
+		compMap->insert(std::pair<componentType**, componentType>(&component, *component));
 
 		//prevent memory leaks by deleting original content
 		delete component;
 
-		//retarget original component ptr to copied component in array
-		component = &(compVec->at(0));
+		//retarget original component ptr to copied component in map
+		component = &(compMap->begin()->second);
 
 		//insert newly created component type vectors address into main components vector. Also, insert into pointer database
-		componentDatabase.insert(std::pair<void*, size_t>(compMap, typeid(componentType).hash_code()));
-		pointerDatabase.push_back(compPtrAddresses);
+		componentDatabase.insert(std::pair<void*, size_t>(compMap, typeid(*component).hash_code()));
 	}
 
 	size_t maxEntities = 100000; //size of each individual component cell (eg 100,000 position components can exist only, after which cache thrashing will occur, albeit temporarily)
 	size_t maxComponentTypes = 10000;
 	boost::container::flat_map<void*, size_t> componentDatabase;//address holder OR container of base pointers of all unique component type vectors (eg, components.at(0) may hold base addr of 1st pos component out of all pos components). the value part is the type of component the vector is
-	std::vector<void*> pointerDatabase; //this holds the vectors address which in turn is a componentType** vector. That holds addresses of the actual pointers
-
 };

@@ -3,7 +3,6 @@
 ComponentManager::ComponentManager()
 {
 	componentDatabase.reserve(maxComponentTypes);
-	pointerDatabase.reserve(maxComponentTypes);
 }
 
 
