@@ -36,20 +36,6 @@ public:
 					//get access to the vector pointer from the database. Since we now know the type of the component is componentType
 					std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
 
-					//boost::container::flat_map<componentType**, componentType>* extractedMap = (boost::container::flat_map<componentType**, componentType>*) i->first;
-					//get access to the vector pointer from the pointer database now
-
-					//loop through the extracted vector to make sure if same address component hasnt been inserted
-					//if it already exists in extracted vector, then simply return from function
-					/*for (boost::container::flat_map<componentType**, componentType>::iterator j = extractedMap->begin(); j != extractedMap->end(); j++)
-					{
-						if (&(j->second) == component)
-						{
-							std::cout << "cannot re-insert component of type: " << typeid(componentType).name() << " as its address already exists in database, returning..." << std::endl;
-							return;
-						}
-					}*/
-
 					for (size_t j = 0; j < extractedVector->size(); j++)
 					{
 						if (&(extractedVector->at(j)) == component)
@@ -67,11 +53,9 @@ public:
 
 					//push copy of component into array (will retarget original pointer to this copied component below)
 					extractedVector->push_back(*component);
-					//extractedMap->insert(std::make_pair(&component, *component));
 
 					//retrieve pointer to newly inserted component at specific location 
 					componentType* extractedLastComp = &(extractedVector->at(extractedVector->size() - 1));
-					//componentType* extractedComponent = &((extractedMap->end()-1)->second);
 
 					//prevent memory leaks by free-ing mem allocated by user, and retargetting pointer to the copy inside vector
 					//so that user uses extractedVec copy instead
@@ -80,17 +64,8 @@ public:
 					//retarget original component ptr to above pointer
 					component = extractedLastComp;
 
-					//store component address inside component itself
+					//store retargetted component address inside component itself
 					((Component*)component)->componentPtrHandle = &component;
-					
-					//component = extractedComponent; 
-
-					//retarget everything because boost flatmap apparently shifts around objects for some fucking reason
-					/*for (boost::container::flat_map<HealthComponent**, HealthComponent>::iterator iter = extractedMap->begin(); iter != extractedMap->end(); iter++)
-					{
-						*(iter->first) = &(iter->second);
-					}
-					*/
 
 					std::cout << "component of type: " << typeid(componentType).name() << " successfully inserted into Database" << std::endl;
 					break;
@@ -108,7 +83,6 @@ public:
 	//returns all components of type componentType
 	template<typename componentType>
 	std::vector<componentType>& getComponents()
-	//boost::container::flat_map<componentType**, componentType>& getComponents()
 	{
 		//loop through component database
 		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
@@ -117,16 +91,12 @@ public:
 			if (i->second == typeid(componentType).hash_code())
 			{
 				//since we now know the type of the component is componentType
-				//boost::container::flat_map<componentType**, componentType>* extractedMap = (boost::container::flat_map<componentType**, componentType>*) i->first;
-				//return *extractedMap;
 				std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
 				return *extractedVector;
 			}
 		}
 		//if nothing is found then return empty placeholder componentMap
 		std::cout << "Components of component type: '" << typeid(componentType).name() << "' not found, returning empty reference" << std::endl;
-		//boost::container::flat_map<componentType**, componentType>* EmptyCompMap = new boost::container::flat_map< componentType**, componentType>();
-		//return *EmptyCompMap;
 		std::vector<componentType>* emptyVec = new std::vector<componentType>();
 		return *emptyVec;
 	}
@@ -144,28 +114,23 @@ private:
 		//create new space on heap for component as well as componentType** to hold the pointers addresses. Also, reserve space for vectors
 		std::vector<componentType>* compVec = new std::vector<componentType>();
 		compVec->reserve(maxEntities);
-		//boost::container::flat_map<componentType**, componentType>* compMap = new boost::container::flat_map< componentType**, componentType>();
-		//compMap->reserve(maxEntities);
 
 		//set entityID of component
 		((Component*)component)->setEntityID(entityID);
 
 		//insert dereferenced componentType into allocated space (will create a copy of original content), as well as insert handle to pointer
 		compVec->push_back(*component);
-		//compMap->insert(std::make_pair(&component, *component));
 
 		//prevent memory leaks by deleting original content
 		delete component;
 
 		//retarget original component ptr to copied component in map
 		component = &(compVec->at(0));
-		//component = &(compMap->begin()->second);
 
 		//store component address inside component itself
 		((Component*)component)->componentPtrHandle = &component;
 
 		//insert newly created component type vectors address into main components vector. Also, insert into pointer database
 		componentDatabase.insert(std::pair<void*, size_t>(compVec, typeid(*component).hash_code()));
-		//componentDatabase.insert(std::pair<void*, size_t>(compMap, typeid(*component).hash_code()));
 	}
 };
