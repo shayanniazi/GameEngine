@@ -1,11 +1,11 @@
 #include "Component.h"
 
-Component::Component() { }
+/*Component::Component() { }
 Component::Component(size_t entityID)
 {
 	this->entityID = entityID;
 }
-
+*/
 Component::~Component()
 {
 
@@ -25,3 +25,4 @@ void Component::setEntityID(size_t entityID)
 {
 	this->entityID = entityID;
 }
+

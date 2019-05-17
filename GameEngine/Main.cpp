@@ -1,4 +1,5 @@
 #pragma once
+
 #include "SubSystems.h"
 #include "Display.h"
 #include "CoreEngine.h"
@@ -15,30 +16,30 @@ int main(int argc, char** argv)
 	//CoreEngine* engine = CoreEngine::getEngineInstance();
 
 	//test code
+	ECSEntity* nero = new ECSEntity();
+	ECSEntity* dante = new ECSEntity();
 
-	HealthComponent* health = new HealthComponent(); health->currentHealth = 2222;
+	HealthComponent* health = new HealthComponent(); 
 	HealthComponent* h3 = new HealthComponent();
-	HealthComponent* haaa = new HealthComponent(333);
+	HealthComponent* haaa = new HealthComponent();
 	HealthComponent* a = new HealthComponent();
 	PhysicsComponent* p1 = new PhysicsComponent();
 	PhysicsComponent* p2 = new PhysicsComponent();
+	
+	health->currentHealth = 101;
+	h3->currentHealth = 1;
+	haaa->currentHealth = 2;
+	a->currentHealth = 3;
 
-	ComponentManager* comp = new ComponentManager();
+	nero->addComponent<HealthComponent>(health); 
+	dante->addComponent<HealthComponent>(h3);
 
-	comp->addComponent<HealthComponent>(1, health);
-	comp->addComponent<HealthComponent>(1, a); 
-	comp->addComponent<HealthComponent>(1, h3); 
-	comp->addComponent<PhysicsComponent>(1, p1);
-	comp->addComponent<PhysicsComponent>(1, p2);
-	comp->addComponent<HealthComponent>(1, h3);
-	comp->addComponent<PhysicsComponent>(1, p2);
+	std::cout << health << "NERO ADDRESS" << std::endl;
+	std::cout << h3 << "DANTE ADDRESS" << std::endl;
 
-
-
-
-	//new code end
-
-	//test code end
+	std::vector<HealthComponent>& healths = ComponentManager::getInstance().getComponents<HealthComponent>();
+	for (int i = 0; i < healths.size(); i++)
+		std::cout << healths.at(i).currentHealth << " AND ADDRESS: " << &(healths.at(i)) << std::endl;
 
 	//delete engine;
 	return 0;

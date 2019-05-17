@@ -11,7 +11,7 @@ ECSEntity::ECSEntity()
 		entityID = IDCounter;
 		IDCounter++;
 	}
-	else //set entityID 
+	else //if not empty, then retrieve fiset entityID 
 	{
 		entityID = reusableIDPool.front();
 		reusableIDPool.erase(reusableIDPool.begin());

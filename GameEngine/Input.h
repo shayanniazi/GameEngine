@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL\SDL.h>
+#include "SDL.h"
 #include "KeyCode.h"
 
 class Input

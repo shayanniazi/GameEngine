@@ -4,6 +4,6 @@
 class PhysicsComponent : public Component
 {
 public:
-	PhysicsComponent() {}
-	PhysicsComponent(size_t entityID) : Component(entityID) {}
+	//PhysicsComponent() {}
+	//PhysicsComponent(size_t entityID) : Component(entityID) {}
 };
