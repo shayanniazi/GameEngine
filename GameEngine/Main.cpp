@@ -30,16 +30,21 @@ int main(int argc, char** argv)
 	h3->currentHealth = 1;
 	haaa->currentHealth = 2;
 	a->currentHealth = 3;
-
+	
 	nero->addComponent<HealthComponent>(health); 
 	dante->addComponent<HealthComponent>(h3);
-
-	std::cout << health << "NERO ADDRESS" << std::endl;
-	std::cout << h3 << "DANTE ADDRESS" << std::endl;
+	nero->addComponent<HealthComponent>(haaa);
+	dante->addComponent<HealthComponent>(a);
 
 	std::vector<HealthComponent>& healths = ComponentManager::getInstance().getComponents<HealthComponent>();
-	for (int i = 0; i < healths.size(); i++)
+
+	nero->addComponent<PhysicsComponent>(p1);
+	dante->addComponent<PhysicsComponent>(p2);
+
+	for (size_t i = 0; i < healths.size(); i++)
 		std::cout << healths.at(i).currentHealth << " AND ADDRESS: " << &(healths.at(i)) << std::endl;
+
+
 
 	//delete engine;
 	return 0;

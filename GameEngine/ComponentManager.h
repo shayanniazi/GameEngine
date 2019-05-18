@@ -25,16 +25,17 @@ public:
 		else
 		{
 			bool componentTypeFound = false;
+			bool retargettingRequired = false;
 
-			//search each vector from vector database (components vector) to see if it contains the required component type
-			for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+			//search each item from component database (components map) to see if it contains the required component type
+			for (boost::container::flat_map<void*, size_t>::iterator compDBIter = componentDatabase.begin(); compDBIter != componentDatabase.end(); compDBIter++)
 			{
-				//if type matches, then insert the passed in component parameter to the vector database's appropriate index
-				if (i->second == typeid(*component).hash_code())
+				//check if passed in component parameter type exists in database
+				if (compDBIter->second == typeid(*component).hash_code())
 				{
 
 					//get access to the vector pointer from the database. Since we now know the type of the component is componentType
-					std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
+					std::vector<componentType>* extractedVector = (std::vector<componentType>*) compDBIter->first;
 
 					for (size_t j = 0; j < extractedVector->size(); j++)
 					{
@@ -45,11 +46,12 @@ public:
 						}
 					}
 
-					//component type exists in database and is not a duplicate
+					//component type has been found to exist in database and is not a duplicate
 					componentTypeFound = true;
 
-					//set entityID of component
-					((Component*)component)->setEntityID(entityID);
+					//before insertion, check if retargetting is going to be needed once component is inserted in next few steps
+					if ((extractedVector->capacity() == extractedVector->size()))
+						retargettingRequired = true;
 
 					//push copy of component into array (will retarget original pointer to this copied component below)
 					extractedVector->push_back(*component);
@@ -64,8 +66,26 @@ public:
 					//retarget original component ptr to above pointer
 					component = extractedLastComp;
 
-					//store retargetted component address inside component itself
-					((Component*)component)->componentPtrHandle = &component;
+					//store retargetted component address (pointer address) inside component itself
+					((Component*)component)->componentPtrHandle = (Component**)(&component);
+					*((Component*)component)->componentPtrHandle = extractedLastComp;
+
+					//set entityID of component
+					((Component*)component)->setEntityID(entityID);
+
+					//retarget everything if required
+					if (retargettingRequired)
+					{
+						//retarget component DB to new vector location
+						for (size_t j = 0; j < extractedVector->size(); j++)
+						{
+							Component* extractedComp = &(extractedVector->at(j));
+							*(extractedComp->componentPtrHandle) = extractedComp;
+						}
+						//retargetting done
+						retargettingRequired = false;
+						std::cout << "component vector of type: " << typeid(componentType).name() << " capacity reached. Retarget to new mem location successful" << std::endl;
+					}
 
 					std::cout << "component of type: " << typeid(componentType).name() << " successfully inserted into Database" << std::endl;
 					break;
@@ -128,7 +148,7 @@ private:
 		component = &(compVec->at(0));
 
 		//store component address inside component itself
-		((Component*)component)->componentPtrHandle = &component;
+		((Component*)component)->componentPtrHandle = (Component**)(&component);
 
 		//insert newly created component type vectors address into main components vector. Also, insert into pointer database
 		componentDatabase.insert(std::pair<void*, size_t>(compVec, typeid(*component).hash_code()));
