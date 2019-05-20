@@ -115,10 +115,41 @@ public:
 				return *extractedVector;
 			}
 		}
-		//if nothing is found then return empty placeholder componentMap
+		//if nothing is found then return empty placeholder component vector
 		std::cout << "Components of component type: '" << typeid(componentType).name() << "' not found, returning empty reference" << std::endl;
 		std::vector<componentType>* emptyVec = new std::vector<componentType>();
 		return *emptyVec;
+	}
+
+	//returns 1st component of componentType that is linked to entity with entityID
+	template <typename componentType>
+	componentType* getComponent(size_t entityID)
+	{
+		//loop through component database
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		{
+			//check if the component map is of the right type
+			if (i->second == typeid(componentType).hash_code())
+			{
+				//since we now know the type of the component is componentType
+				std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
+				
+				//loop through each component inside extractedVector
+				for (size_t j = 0; j < extractedVector->size(); j++)
+				{
+					componentType* extractedComponent = extractedVector->at(j);
+					
+					//check if component has the required ID
+					if (((Component*)extractedComponent)->entityID == entityID)
+					{
+						return extractedTypeComponent;
+					}
+				}
+			}
+		}
+		//if nothing is found then return empty placeholder component
+		std::cout << "Component of component type: '" << typeid(componentType).name() << "' with entity ID " << entityID << " not found, returning empty reference" << std::endl;		
+		return nullptr;
 	}
 
 private:

@@ -44,8 +44,6 @@ int main(int argc, char** argv)
 	for (size_t i = 0; i < healths.size(); i++)
 		std::cout << healths.at(i).currentHealth << " AND ADDRESS: " << &(healths.at(i)) << std::endl;
 
-
-
 	//delete engine;
 	return 0;
 }
