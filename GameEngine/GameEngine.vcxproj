@@ -22,26 +22,29 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="CoreEngine.cpp" />
-    <ClCompile Include="Display.cpp" />
+    <ClCompile Include="DisplayService.cpp" />
     <ClCompile Include="ECSEntity.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputService.cpp" />
     <ClCompile Include="KeyCode.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SubSystems.cpp" />
+    <ClCompile Include="HALService.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="CoreEngine.h" />
-    <ClInclude Include="Display.h" />
+    <ClInclude Include="DisplayService.h" />
     <ClInclude Include="ECSEntity.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InputService.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="PhysicsComponent.h" />
-    <ClInclude Include="SubSystems.h" />
+    <ClInclude Include="HALService.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AC473835-AE69-4BAC-A77A-69BFD0764989}</ProjectGuid>

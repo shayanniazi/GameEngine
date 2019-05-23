@@ -1,9 +1,11 @@
 #pragma once
-#include "SubSystems.h"
-#include "Display.h"
+#include "HALService.h"
+#include "DisplayService.h"
+#include "InputService.h"
 #include "Input.h"
 #include "KeyCode.h"
 #include "Time.h"
+#include "ComponentManager.h"
 #include <iostream>
 
 //Singleton class
@@ -11,14 +13,13 @@
 class CoreEngine
 {
 public:
-	//CoreEngine();
 	~CoreEngine();
-	static CoreEngine* getEngineInstance();
+	static CoreEngine& getInstance();
 
 private: 
 	CoreEngine();
 	void engineSetup();
-	void run();
+	void gameLoop();
 	void processInput();
 	void update();
 	void lateUpdate();
@@ -27,9 +28,5 @@ private:
 	double deltaTime;
 
 	static CoreEngine* instance;
-	SubSystems* subSystems = nullptr;
-	Display* display = nullptr;
-	Input* input = nullptr;
-	KeyCode* keyCode = nullptr;
 };
 

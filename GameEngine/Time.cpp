@@ -1,15 +1,5 @@
 #include "Time.h"
 
-Time::Time()
-{
-
-}
-
-
-Time::~Time()
-{
-}
-
 double Time::getTime()
 {
 	LARGE_INTEGER time;

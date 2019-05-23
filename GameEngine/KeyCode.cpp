@@ -1,63 +1,51 @@
 #include "KeyCode.h"
 
-KeyCode* KeyCode::instance = nullptr;
+const KeyCode* const KeyCode::leftMouse = new KeyCode(1);
+const KeyCode* const KeyCode::middleMouse = new KeyCode(2);
+const KeyCode* const KeyCode::rightMouse = new KeyCode(3);
 
-KeyCode* KeyCode::leftMouse = new KeyCode(1);
-KeyCode* KeyCode::middleMouse = new KeyCode(2);
-KeyCode* KeyCode::rightMouse = new KeyCode(3);
+const KeyCode* const KeyCode::key0 = new KeyCode(SDL_SCANCODE_0);
+const KeyCode* const KeyCode::key1 = new KeyCode(SDL_SCANCODE_1);
+const KeyCode* const KeyCode::key2 = new KeyCode(SDL_SCANCODE_2);
+const KeyCode* const KeyCode::key3 = new KeyCode(SDL_SCANCODE_3);
+const KeyCode* const KeyCode::key4 = new KeyCode(SDL_SCANCODE_4);
+const KeyCode* const KeyCode::key5 = new KeyCode(SDL_SCANCODE_5);
+const KeyCode* const KeyCode::key6 = new KeyCode(SDL_SCANCODE_6);
+const KeyCode* const KeyCode::key7 = new KeyCode(SDL_SCANCODE_7);
+const KeyCode* const KeyCode::key8 = new KeyCode(SDL_SCANCODE_8);
+const KeyCode* const KeyCode::key9 = new KeyCode(SDL_SCANCODE_9);
 
-KeyCode* KeyCode::key0 = new KeyCode(SDL_SCANCODE_0);
-KeyCode* KeyCode::key1 = new KeyCode(SDL_SCANCODE_1);
-KeyCode* KeyCode::key2 = new KeyCode(SDL_SCANCODE_2);
-KeyCode* KeyCode::key3 = new KeyCode(SDL_SCANCODE_3);
-KeyCode* KeyCode::key4 = new KeyCode(SDL_SCANCODE_4);
-KeyCode* KeyCode::key5 = new KeyCode(SDL_SCANCODE_5);
-KeyCode* KeyCode::key6 = new KeyCode(SDL_SCANCODE_6);
-KeyCode* KeyCode::key7 = new KeyCode(SDL_SCANCODE_7);
-KeyCode* KeyCode::key8 = new KeyCode(SDL_SCANCODE_8);
-KeyCode* KeyCode::key9 = new KeyCode(SDL_SCANCODE_9);
-
-KeyCode* KeyCode::A = new KeyCode(SDL_SCANCODE_A);
-KeyCode* KeyCode::B = new KeyCode(SDL_SCANCODE_B);
-KeyCode* KeyCode::C = new KeyCode(SDL_SCANCODE_C);
-KeyCode* KeyCode::D = new KeyCode(SDL_SCANCODE_D);
-KeyCode* KeyCode::E = new KeyCode(SDL_SCANCODE_E);
-KeyCode* KeyCode::F = new KeyCode(SDL_SCANCODE_F);
-KeyCode* KeyCode::G = new KeyCode(SDL_SCANCODE_G);
-KeyCode* KeyCode::H = new KeyCode(SDL_SCANCODE_H);
-KeyCode* KeyCode::I = new KeyCode(SDL_SCANCODE_I);
-KeyCode* KeyCode::J = new KeyCode(SDL_SCANCODE_J);
-KeyCode* KeyCode::K = new KeyCode(SDL_SCANCODE_K);
-KeyCode* KeyCode::L = new KeyCode(SDL_SCANCODE_L);
-KeyCode* KeyCode::M = new KeyCode(SDL_SCANCODE_M);
-KeyCode* KeyCode::N = new KeyCode(SDL_SCANCODE_N);
-KeyCode* KeyCode::O = new KeyCode(SDL_SCANCODE_O);
-KeyCode* KeyCode::P = new KeyCode(SDL_SCANCODE_P);
-KeyCode* KeyCode::Q = new KeyCode(SDL_SCANCODE_Q);
-KeyCode* KeyCode::R = new KeyCode(SDL_SCANCODE_R);
-KeyCode* KeyCode::S = new KeyCode(SDL_SCANCODE_S);
-KeyCode* KeyCode::T = new KeyCode(SDL_SCANCODE_T);
-KeyCode* KeyCode::U = new KeyCode(SDL_SCANCODE_U);
-KeyCode* KeyCode::V = new KeyCode(SDL_SCANCODE_V);
-KeyCode* KeyCode::W = new KeyCode(SDL_SCANCODE_W);
-KeyCode* KeyCode::X = new KeyCode(SDL_SCANCODE_X);
-KeyCode* KeyCode::Y = new KeyCode(SDL_SCANCODE_Y);
-KeyCode* KeyCode::Z = new KeyCode(SDL_SCANCODE_Z);
+const KeyCode* const KeyCode::A = new KeyCode(SDL_SCANCODE_A);
+const KeyCode* const KeyCode::B = new KeyCode(SDL_SCANCODE_B);
+const KeyCode* const KeyCode::C = new KeyCode(SDL_SCANCODE_C);
+const KeyCode* const KeyCode::D = new KeyCode(SDL_SCANCODE_D);
+const KeyCode* const KeyCode::E = new KeyCode(SDL_SCANCODE_E);
+const KeyCode* const KeyCode::F = new KeyCode(SDL_SCANCODE_F);
+const KeyCode* const KeyCode::G = new KeyCode(SDL_SCANCODE_G);
+const KeyCode* const KeyCode::H = new KeyCode(SDL_SCANCODE_H);
+const KeyCode* const KeyCode::I = new KeyCode(SDL_SCANCODE_I);
+const KeyCode* const KeyCode::J = new KeyCode(SDL_SCANCODE_J);
+const KeyCode* const KeyCode::K = new KeyCode(SDL_SCANCODE_K);
+const KeyCode* const KeyCode::L = new KeyCode(SDL_SCANCODE_L);
+const KeyCode* const KeyCode::M = new KeyCode(SDL_SCANCODE_M);
+const KeyCode* const KeyCode::N = new KeyCode(SDL_SCANCODE_N);
+const KeyCode* const KeyCode::O = new KeyCode(SDL_SCANCODE_O);
+const KeyCode* const KeyCode::P = new KeyCode(SDL_SCANCODE_P);
+const KeyCode* const KeyCode::Q = new KeyCode(SDL_SCANCODE_Q);
+const KeyCode* const KeyCode::R = new KeyCode(SDL_SCANCODE_R);
+const KeyCode* const KeyCode::S = new KeyCode(SDL_SCANCODE_S);
+const KeyCode* const KeyCode::T = new KeyCode(SDL_SCANCODE_T);
+const KeyCode* const KeyCode::U = new KeyCode(SDL_SCANCODE_U);
+const KeyCode* const KeyCode::V = new KeyCode(SDL_SCANCODE_V);
+const KeyCode* const KeyCode::W = new KeyCode(SDL_SCANCODE_W);
+const KeyCode* const KeyCode::X = new KeyCode(SDL_SCANCODE_X);
+const KeyCode* const KeyCode::Y = new KeyCode(SDL_SCANCODE_Y);
+const KeyCode* const KeyCode::Z = new KeyCode(SDL_SCANCODE_Z);
 
 
-int KeyCode::getCode()
+int KeyCode::getCode() const
 {
 	return this->code;
-}
-
-KeyCode* KeyCode::getInstance()
-{
-	if (instance == nullptr)
-	{
-		instance = new KeyCode();
-		instance->masterControl = true;
-	}
-	return instance;
 }
 
 KeyCode::KeyCode()
@@ -67,21 +55,4 @@ KeyCode::KeyCode()
 KeyCode::KeyCode(int code)
 {
 	this->code = code;
-}
-
-void KeyCode::cleanUp()
-{
-	if (!masterControl)
-		return;
-	delete leftMouse; delete middleMouse; delete rightMouse;
-	delete key0; delete key1; delete key2; delete key3; delete key4; delete key5; delete key6;
-	delete key7; delete key8; delete key9;
-	delete A; delete B; delete C; delete D; delete E; delete F; delete G; delete H; delete I;
-	delete J; delete K; delete L; delete M; delete N; delete O; delete P; delete Q; delete R;
-	delete S; delete T; delete U; delete V; delete W; delete X; delete Y; delete Z;
-}
-
-KeyCode::~KeyCode()
-{
-
 }

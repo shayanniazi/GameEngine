@@ -5,8 +5,6 @@
 class Time
 {
 public:
-	Time();
-	~Time();
 	static double getTime();
 };
 

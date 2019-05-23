@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SubSystems.h"
-#include "Display.h"
 #include "CoreEngine.h"
 #include <iostream>
 
@@ -9,11 +7,12 @@
 #include "PhysicsComponent.h"
 #include "ECSEntity.h"
 #include "ComponentManager.h"
-#include <boost/container/flat_map.hpp>
+#include "Utilities.h"
+#include "Input.h"
 
 int main(int argc, char** argv)
 {	
-	//CoreEngine* engine = CoreEngine::getEngineInstance();
+	//CoreEngine& engine = CoreEngine::getInstance();
 
 	//test code
 	ECSEntity* nero = new ECSEntity();
@@ -36,7 +35,7 @@ int main(int argc, char** argv)
 	nero->addComponent<HealthComponent>(haaa);
 	dante->addComponent<HealthComponent>(a);
 
-	std::vector<HealthComponent>& healths = ComponentManager::getInstance().getComponents<HealthComponent>();
+	std::vector<HealthComponent>& healths = ComponentManager::getInstance().getAllComponents<HealthComponent>();
 
 	nero->addComponent<PhysicsComponent>(p1);
 	dante->addComponent<PhysicsComponent>(p2);
@@ -44,6 +43,15 @@ int main(int argc, char** argv)
 	for (size_t i = 0; i < healths.size(); i++)
 		std::cout << healths.at(i).currentHealth << " AND ADDRESS: " << &(healths.at(i)) << std::endl;
 
-	//delete engine;
+	//eg of retrieving 1st component with specific entityID 
+	health = ComponentManager::getInstance().getComponent<HealthComponent>(nero->getEntityID());
+	if (health)
+		std::cout << health->currentHealth << std::endl;
+	else
+		std::cout << "null pointer it was " << std::endl;
+	
+	ComponentManager::getInstance().removeComponents<HealthComponent>(nero->getEntityID());
+	ComponentManager::getInstance().removeAllComponents<HealthComponent>();
+
 	return 0;
 }

@@ -5,35 +5,27 @@ CoreEngine* CoreEngine::instance = nullptr;
 CoreEngine::CoreEngine()
 {
 	engineSetup();
-	run(); //gameloop
+	gameLoop(); //gameloop
 }
 
 CoreEngine::~CoreEngine()
 {
-	delete subSystems;
-	delete display;
-	delete input;
-	keyCode->cleanUp(); //deletes all keycodes in memory
-	delete keyCode;
-	//delete subSystems;
-	//delete display;
-	subSystems, display, input, keyCode, instance = nullptr;
+	instance = nullptr;
 }
 
-CoreEngine* CoreEngine::getEngineInstance()
+CoreEngine& CoreEngine::getInstance()
 {
 	if (instance == nullptr)
 		instance = new CoreEngine();	
 	
-	return instance;
+	return *instance;
 }
 
 void CoreEngine::engineSetup()
 {
-	subSystems = SubSystems::getInstance(); //set up SDL and shit
-	display = Display::getInstance(); //create and get the only instance of display that will exist
-	input = Input::getInstance();
-	keyCode = KeyCode::getInstance(); //master control, controls all other keycodes in mem
+	HALService::initEngineSubSystems(); //set up SDL and shit (sub systems have to be initialized before window is created)
+	DisplayService::createWindow(); //create and setup SDL Window
+	InputService::initInputStates(); //initializes keyboard and mouse states
 	isRunning = true;
 }
 
@@ -50,7 +42,7 @@ void CoreEngine::processInput()
 		}
 	}
 
-	input->updateInput();
+	InputService::updateInput();
 }
 
 void CoreEngine::update()
@@ -65,10 +57,11 @@ void CoreEngine::update()
 
 void CoreEngine::lateUpdate()
 {
-	input->updatePrevInput();
+	InputService::updatePrevInput();
+	ComponentManager::getInstance().cleanGarbage();
 }
 
-void CoreEngine::run()
+void CoreEngine::gameLoop()
 {
 	double prevTime = Time::getTime();
 	double elapsedTime = 0;
@@ -94,6 +87,7 @@ void CoreEngine::run()
 			deltaAccumulator -= frameCap;
 		}
 
+		//print out # of frames passed after time >= 1s
 		if (elapsedTime >= 1)
 		{
 			elapsedTime = 0;
