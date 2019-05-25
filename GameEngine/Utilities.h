@@ -5,7 +5,7 @@ public:
 
 	//checks if baseType is base of derivedType, as well as check if derivedType and baseType are not the same
 	template<typename derivedType, typename baseType>
-	static void checkValidityOfType()
+	static void isChildOf()
 	{
 		const bool T_DerivedFromComponent = std::is_base_of<baseType, derivedType>::value;
 		const bool T_is_Component = std::is_same<derivedType, baseType>::value;

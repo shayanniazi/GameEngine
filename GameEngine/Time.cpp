@@ -1,4 +1,6 @@
 #include "Time.h"
+#include <time.h>
+#include <Windows.h>
 
 double Time::getTime()
 {

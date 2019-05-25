@@ -1,12 +1,4 @@
 #pragma once
-#include "HALService.h"
-#include "DisplayService.h"
-#include "InputService.h"
-#include "Input.h"
-#include "KeyCode.h"
-#include "Time.h"
-#include "ComponentManager.h"
-#include <iostream>
 
 //Singleton class
 

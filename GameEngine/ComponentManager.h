@@ -14,19 +14,19 @@ public:
 	void cleanGarbage(); //memory leak cleanup
 
 	template<typename componentType>
-	void addComponent(size_t entityID, componentType*& component)
+	bool addComponent(size_t entityID, componentType*& component)
 	{
 		//create first element in 'components' vector of type 'component'
 		if (componentDatabase.empty())
 		{
 			std::cout << "component DB was empty, so new component of type: '" << typeid(componentType).name() << "' was created" << std::endl;
 			newComponentDBEntry<componentType>(entityID, component);
+			return true;
 		}
 		//if the componentDatabase already has stored collection of component map pointers inside it
 		else
 		{
 			bool componentTypeFound = false;
-			bool retargettingRequired = false;
 
 			//search each item from component database (components map) to see if it contains the required component type
 			for (boost::container::flat_map<void*, size_t>::iterator compDBIter = componentDatabase.begin(); compDBIter != componentDatabase.end(); compDBIter++)
@@ -42,7 +42,7 @@ public:
 						if (&(extractedVector->at(j)) == component)
 						{
 							std::cout << "cannot re-insert component of type: " << typeid(componentType).name() << " as its address already exists in database, returning..." << std::endl;
-							return;
+							return false;
 						}
 					}
 
@@ -66,7 +66,7 @@ public:
 					((Component*)component)->entityID = entityID;
 
 					std::cout << "component of type: " << typeid(componentType).name() << " successfully inserted into Database" << std::endl;
-					break;
+					return true;
 				}
 			}
 			//if the database didnt contain the requisite component type, then create a new entry into the database for that component type
@@ -74,6 +74,7 @@ public:
 			{
 				std::cout << "component of type: " << typeid(componentType).name() << " did not exist, so creating new entry into DB" << std::endl;
 				newComponentDBEntry<componentType>(entityID, component);
+				return true;
 			}
 		}
 	}
@@ -169,12 +170,12 @@ public:
 
 	//removes 1st component of componentType with entityID
 	template<typename componentType>
-	void removeComponent(size_t entityID)
+	bool removeComponent(size_t entityID)
 	{
 		//loop through component database
 		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
 		{
-			//check if the component map is of the right type
+			//check if the component map contains the right type
 			if (i->second == typeid(componentType).hash_code())
 			{
 				//since we now know the type of the component is componentType
@@ -191,21 +192,23 @@ public:
 					{
 						extractedVector->erase(extractedVector->begin()+j);
 						std::cout << "Component of component type: '" << typeid(componentType).name() << "' with entity ID " << entityID << " erased from vector" << std::endl;
-						return;
+						return true;
 					}
 				}
 			}
 		}
+
+		return false;
 	}
 
 	//removes all components of componentType with entityID
 	template<typename componentType>
-	void removeComponents(size_t entityID)
+	bool removeComponents(size_t entityID)
 	{
 		//loop through component database
 		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
 		{
-			//check if the component map is of the right type
+			//check if the component map contains the right type
 			if (i->second == typeid(componentType).hash_code())
 			{
 				//component with matching ID found
@@ -230,7 +233,12 @@ public:
 				}
 
 				if (!componentFound)
+				{
 					std::cout << "No component of type: " << typeid(componentType).name() << " with entity ID: " << entityID << " found in component database" << std::endl;
+					return false;
+				}
+				else
+					return true;
 			}
 		}
 	}

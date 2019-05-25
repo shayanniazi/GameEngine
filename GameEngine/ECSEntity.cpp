@@ -1,10 +1,13 @@
 #include "ECSEntity.h"
+#include "Game.h"
 
 size_t ECSEntity::IDCounter = 0;
 std::vector<size_t> ECSEntity::reusableIDPool({}); //initialized to empty vector '{ }'
 
 ECSEntity::ECSEntity()
 {
+	componentTypeVec.reserve(Game::maxEntities);
+
 	//if reusable pool is empty, then generate an ID
 	if (reusableIDPool.empty())
 	{
@@ -17,7 +20,6 @@ ECSEntity::ECSEntity()
 		reusableIDPool.erase(reusableIDPool.begin());
 	}
 }
-
 
 ECSEntity::~ECSEntity()
 {

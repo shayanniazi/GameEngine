@@ -1,7 +1,7 @@
 #pragma once
 #include "SDL.h"
-#include "KeyCode.h"
 
+//static class
 class InputService
 {
 public:

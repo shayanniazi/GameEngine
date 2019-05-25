@@ -1,4 +1,5 @@
 #include "KeyCode.h"
+#include "SDL.h"
 
 const KeyCode* const KeyCode::leftMouse = new KeyCode(1);
 const KeyCode* const KeyCode::middleMouse = new KeyCode(2);

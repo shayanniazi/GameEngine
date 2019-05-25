@@ -1,4 +1,5 @@
 #include "InputService.h"
+#include "KeyCode.h"
 
 //getting numKeys from SDL_GetKeyboardState() so prevKeyboardState can be initialized;
 int InputService::numKeys = 0;

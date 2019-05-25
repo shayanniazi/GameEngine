@@ -1,4 +1,5 @@
 #include "HALService.h"
+#include "SDL.h"
 
 //initializes audio, keyboard and other low level systems (SDL)
 void HALService::initEngineSubSystems()
