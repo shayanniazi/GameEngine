@@ -6,7 +6,7 @@
 #include "Time.h"
 #include "Input.h"
 #include "KeyCode.h"
-#include "ComponentManager.h"
+#include "ComponentDatabaseService.h" //obtains access to private members using friend class 'pass'
 #include <iostream>
 
 CoreEngine* CoreEngine::instance = nullptr;
@@ -70,7 +70,7 @@ void CoreEngine::update()
 void CoreEngine::lateUpdate()
 {
 	InputService::updatePrevInput();
-	ComponentManager::getInstance().cleanGarbage();
+	ComponentDatabaseService::getInstance().cleanGarbage();
 }
 
 void CoreEngine::gameLoop()

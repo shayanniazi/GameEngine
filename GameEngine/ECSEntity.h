@@ -1,26 +1,23 @@
 #pragma once
 #include <vector>
-#include "ComponentManager.h"
+#include "ComponentDatabaseService.h"
 #include "Utilities.h"
 
 class ECSEntity
 {
 public:
-	ECSEntity();
+	ECSEntity(std::string entityName);
 	~ECSEntity();
-	void removeEntity(); //puts the entity ID back into reusable pool of ID's
 	size_t getEntityID();
+	std::string getEntityName();
 
 	template<typename componentType>
 	void addComponent(componentType*& component)
 	{
-		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
-		Utilities::isChildOf<componentType, Component>();
-
-		if (ComponentManager::getInstance().addComponent<componentType>(entityID, component))
+		if (ComponentDatabase::getInstance().addComponent<componentType>(entityID, component))
 		{
 			//if component insertion successful in component manager, then add type data of component into entity for bookkeeping
-			componentTypeVec.push_back(typeid(componentType).hash_code());
+			components.push_back(component);
 		}
 
 	}
@@ -28,19 +25,17 @@ public:
 	template<typename componentType>
 	void removeComponent()
 	{
-		Utilities::isChildOf<componentType, Component>();
-
-		//1st check if ComponentManager has the right component in its database and remove it if it does
-		if (ComponentManager::getInstance().removeComponent<componentType>(entityID))
+		//1st check if ComponentDatabaseService has the right component in its database and remove it if it does
+		if (ComponentDatabase::getInstance().removeComponent<componentType>(entityID))
 		{
 			size_t typeID = typeid(componentType).hash_code()
 
-			//if component successfully removed from ComponentManager, then erase from componentTypeVec
+			//if component successfully removed from ComponentDatabaseService, then erase from componentTypeVec
 			for (size_t i = 0; i < componentTypeVec.size(); i++)
 			{
-				if (componentTypeVec.at(i) == typeID)
+				if (typeid(*components.at(i)).hash_code() == typeID)
 				{
-					componentTypeVec.erase(componentTypeVec.begin() + i);
+					components.erase(components.begin() + i);
 					break;
 				}
 			}
@@ -50,24 +45,28 @@ public:
 	template<typename componentType>
 	void removeComponents()
 	{
-		Utilities::isChildOf<componentType, Component>();
-
-		//1st check if ComponentManager has the right component in its database and remove it if it does
-		if (ComponentManager::getInstance().removeComponents<componentType>(entityID))
+		//1st check if ComponentDatabaseService has the right component in its database and remove it if it does
+		if (ComponentDatabase::getInstance().removeComponents<componentType>(entityID))
 		{
 			size_t typeID = typeid(componentType).hash_code()
 
-			//if component successfully removed from ComponentManager, then erase from componentTypeVec
-			for (size_t i = 0; i < componentTypeVec.size(); i++)
-				if (componentTypeVec.at(i) == typeID)
-					componentTypeVec.erase(componentTypeVec.begin() + i);
+			//if component successfully removed from ComponentDatabaseService, then erase from componentTypeVec
+				for (size_t i = 0; i < componentTypeVec.size();)
+				{
+					if (typeid(*components.at(i)).hash_code() == typeID)
+						components.erase(componentTypeVec.begin() + i);
+					else
+						i++;
+				}
 		}
 	}
 
 private:
-	std::vector<size_t> componentTypeVec; //storage of all types of components the entity has
 	static std::vector<size_t> reusableIDPool;
 	static size_t IDCounter;
+
+	std::vector<Component*> components; //storage of all types of components the entity has
 	size_t entityID;
+	std::string entityName;
 };
 

@@ -39,9 +39,6 @@
     <ClCompile Include="KeyCode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentManager.cpp">
-      <Filter>Source Files\ECS</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
@@ -69,16 +66,19 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
+    <ClCompile Include="ComponentDatabaseService.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentDatabase.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityDatbase.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyCode.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentManager.h">
-      <Filter>Header Files\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\ECS</Filter>
@@ -116,7 +116,13 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
+    <ClInclude Include="ComponentDatabase.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentDatabaseService.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityDatbase.h">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>

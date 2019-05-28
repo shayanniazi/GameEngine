@@ -20,11 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentManager.cpp" />
+    <ClCompile Include="ComponentDatabase.cpp" />
+    <ClCompile Include="ComponentDatabaseService.cpp" />
     <ClCompile Include="CoreEngine.cpp" />
     <ClCompile Include="DisplayService.cpp" />
     <ClCompile Include="ECSEntity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="EntityDatbase.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputService.cpp" />
@@ -35,11 +36,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentManager.h" />
+    <ClInclude Include="ComponentDatabase.h" />
+    <ClInclude Include="ComponentDatabaseService.h" />
     <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="DisplayService.h" />
     <ClInclude Include="ECSEntity.h" />
-    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="EntityDatbase.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Input.h" />

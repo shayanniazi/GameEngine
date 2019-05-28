@@ -5,31 +5,69 @@
 #include "Component.h"
 
 //SINGLETON CLASS
-class ComponentManager
+class ComponentDatabaseService
 {
 public:
-	~ComponentManager();
-	static ComponentManager& getInstance();
-	static ComponentManager* instance;
+	static ComponentDatabaseService& getInstance();
+
+private:
+	friend class ComponentDatabase;
+	friend class ECSEntity;
+	friend class CoreEngine;
+
+	ComponentDatabaseService();
+	~ComponentDatabaseService();
 	void cleanGarbage(); //memory leak cleanup
+
+	static ComponentDatabaseService* instance;
+	size_t m_maxEntities = 100000; //size of each individual component cell (eg 100,000 position components can exist only, after which cache thrashing will occur, albeit temporarily)
+	size_t m_maxComponentTypes = 10000;
+	boost::container::flat_map<void*, size_t> componentDB; //address holder OR container of base pointers of all unique component type vectors (eg, components.at(0) may hold base addr of 1st pos component out of all pos components). the value part is the type of component the vector is
+	std::vector<void*> garbage; //this contains pointers to vectors that are returned to user upon calling 'getComponent' functions mainly. If a returned vector is empty, it will be flagged to be destroyed at end of each frame
+
+	template<typename componentType>
+	void newComponentDBEntry(size_t entityID, componentType*& component)
+	{
+		//create new space on heap for component as well as componentType** to hold the pointers addresses. Also, reserve space for vectors
+		std::vector<componentType>* compVec = new std::vector<componentType>();
+		compVec->reserve(m_maxEntities);
+
+		//set entityID of component
+		((Component*)component)->entityID = entityID;
+
+		//insert dereferenced componentType into allocated space (will create a copy of original content), as well as insert handle to pointer
+		compVec->push_back(*component);
+
+		//prevent memory leaks by deleting original content
+		delete component;
+
+		//retarget original component ptr to copied component in map
+		component = &(compVec->at(0));
+
+		//insert newly created component type vectors address into main components vector. Also, insert into pointer database
+		componentDB.insert(std::pair<void*, size_t>(compVec, typeid(*component).hash_code()));
+	}
 
 	template<typename componentType>
 	bool addComponent(size_t entityID, componentType*& component)
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+
 		//create first element in 'components' vector of type 'component'
-		if (componentDatabase.empty())
+		if (componentDB.empty())
 		{
 			std::cout << "component DB was empty, so new component of type: '" << typeid(componentType).name() << "' was created" << std::endl;
 			newComponentDBEntry<componentType>(entityID, component);
 			return true;
 		}
-		//if the componentDatabase already has stored collection of component map pointers inside it
+		//if the componentDB already has stored collection of component map pointers inside it
 		else
 		{
 			bool componentTypeFound = false;
 
 			//search each item from component database (components map) to see if it contains the required component type
-			for (boost::container::flat_map<void*, size_t>::iterator compDBIter = componentDatabase.begin(); compDBIter != componentDatabase.end(); compDBIter++)
+			for (boost::container::flat_map<void*, size_t>::iterator compDBIter = componentDB.begin(); compDBIter != componentDB.end(); compDBIter++)
 			{
 				//check if passed in component parameter type exists in database
 				if (compDBIter->second == typeid(*component).hash_code())
@@ -61,7 +99,7 @@ public:
 
 					//retarget original component ptr to above pointer
 					component = extractedLastComp;
-				
+
 					//set entityID of component
 					((Component*)component)->entityID = entityID;
 
@@ -81,10 +119,13 @@ public:
 
 	//returns all components of type componentType
 	template<typename componentType>
-	std::vector<componentType>& getAllComponents()
+	const std::vector<componentType>& getAllComponents()
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+	
 		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB.begin(); i != componentDB.end(); i++)
 		{
 			//check if the component map is of the right type
 			if (i->second == typeid(componentType).hash_code())
@@ -106,21 +147,24 @@ public:
 	template <typename componentType>
 	componentType* getComponent(size_t entityID)
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+
 		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB.begin(); i != componentDB.end(); i++)
 		{
 			//check if the component map is of the right type
 			if (i->second == typeid(componentType).hash_code())
 			{
 				//since we now know the type of the component is componentType
 				std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
-				
+
 				//loop through each component inside extractedVector
 				for (size_t j = 0; j < extractedVector->size(); j++)
 				{
 					//extract component out of vector one by one
 					componentType* extractedComponent = &extractedVector->at(j);
-					
+
 					//check if extracted component has the required ID
 					if (((Component*)extractedComponent)->entityID == entityID)
 					{
@@ -130,7 +174,7 @@ public:
 			}
 		}
 		//if nothing is found then return empty placeholder component
-		std::cout << "Component of component type: '" << typeid(componentType).name() << "' with entity ID " << entityID << " not found, returning empty reference" << std::endl;		
+		std::cout << "Component of component type: '" << typeid(componentType).name() << "' with entity ID " << entityID << " not found, returning empty reference" << std::endl;
 		return nullptr;
 	}
 
@@ -138,11 +182,14 @@ public:
 	template <typename componentType>
 	std::vector<componentType*>* getComponents(size_t entityID)
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+
 		//create new vector which will contain all components of type with entityID
 		std::vector<componentType*>* entityVec = new std::vector<componentType>();
 
 		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB.begin(); i != componentDB.end(); i++)
 		{
 			//check if the component map is of the right type
 			if (i->second == typeid(componentType).hash_code())
@@ -172,8 +219,11 @@ public:
 	template<typename componentType>
 	bool removeComponent(size_t entityID)
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+
 		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB.begin(); i != componentDB.end(); i++)
 		{
 			//check if the component map contains the right type
 			if (i->second == typeid(componentType).hash_code())
@@ -190,7 +240,7 @@ public:
 					//check if extracted component has the required ID
 					if (((Component*)extractedComponent)->entityID == entityID)
 					{
-						extractedVector->erase(extractedVector->begin()+j);
+						extractedVector->erase(extractedVector->begin() + j);
 						std::cout << "Component of component type: '" << typeid(componentType).name() << "' with entity ID " << entityID << " erased from vector" << std::endl;
 						return true;
 					}
@@ -205,8 +255,11 @@ public:
 	template<typename componentType>
 	bool removeComponents(size_t entityID)
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+
 		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB.begin(); i != componentDB.end(); i++)
 		{
 			//check if the component map contains the right type
 			if (i->second == typeid(componentType).hash_code())
@@ -247,8 +300,11 @@ public:
 	template<typename componentType>
 	void removeAllComponents()
 	{
+		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
+		Utilities::isChildOf<componentType, Component>();
+
 		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDatabase.begin(); i != componentDatabase.end(); i++)
+		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB.begin(); i != componentDB.end(); i++)
 		{
 			//check if the component map is of the right type
 			if (i->second == typeid(componentType).hash_code())
@@ -262,36 +318,5 @@ public:
 		}
 		//assuming appropriate type was not located in DB
 		std::cout << "Component vector of type: " << typeid(componentType).name() << " was not found in the component database, therefore unabale to remove all components from it" << std::endl;
-	}
-
-private:
-	ComponentManager();
-
-	size_t maxEntities = 100000; //size of each individual component cell (eg 100,000 position components can exist only, after which cache thrashing will occur, albeit temporarily)
-	size_t maxComponentTypes = 10000;
-	boost::container::flat_map<void*, size_t> componentDatabase; //address holder OR container of base pointers of all unique component type vectors (eg, components.at(0) may hold base addr of 1st pos component out of all pos components). the value part is the type of component the vector is
-	std::vector<void*> garbage; //this contains pointers to vectors that are returned to user upon calling 'getComponent' functions mainly. If a returned vector is empty, it will be flagged to be destroyed at end of each frame
-
-	template<typename componentType>
-	void newComponentDBEntry(size_t entityID, componentType*& component)
-	{
-		//create new space on heap for component as well as componentType** to hold the pointers addresses. Also, reserve space for vectors
-		std::vector<componentType>* compVec = new std::vector<componentType>();
-		compVec->reserve(maxEntities);
-
-		//set entityID of component
-		((Component*)component)->entityID = entityID;
-
-		//insert dereferenced componentType into allocated space (will create a copy of original content), as well as insert handle to pointer
-		compVec->push_back(*component);
-
-		//prevent memory leaks by deleting original content
-		delete component;
-
-		//retarget original component ptr to copied component in map
-		component = &(compVec->at(0));
-
-		//insert newly created component type vectors address into main components vector. Also, insert into pointer database
-		componentDatabase.insert(std::pair<void*, size_t>(compVec, typeid(*component).hash_code()));
 	}
 };
