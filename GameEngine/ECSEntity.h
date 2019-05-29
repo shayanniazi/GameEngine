@@ -11,62 +11,53 @@ public:
 	size_t getEntityID();
 	std::string getEntityName();
 
+	//adds component of type componentType to this entity
 	template<typename componentType>
 	void addComponent(componentType*& component)
 	{
-		if (ComponentDatabase::getInstance().addComponent<componentType>(entityID, component))
-		{
-			//if component insertion successful in component manager, then add type data of component into entity for bookkeeping
-			components.push_back(component);
-		}
-
+		ComponentDatabaseService::addComponent<componentType>(this, component);
 	}
 
+	//removes component of type componentType from this entity
 	template<typename componentType>
 	void removeComponent()
 	{
-		//1st check if ComponentDatabaseService has the right component in its database and remove it if it does
-		if (ComponentDatabase::getInstance().removeComponent<componentType>(entityID))
-		{
-			size_t typeID = typeid(componentType).hash_code()
-
-			//if component successfully removed from ComponentDatabaseService, then erase from componentTypeVec
-			for (size_t i = 0; i < componentTypeVec.size(); i++)
-			{
-				if (typeid(*components.at(i)).hash_code() == typeID)
-				{
-					components.erase(components.begin() + i);
-					break;
-				}
-			}
-		}
+		ComponentDatabaseService::removeComponent<componentType>(this);
 	}
 
+	//removes all components of type componentType from this entity
 	template<typename componentType>
 	void removeComponents()
 	{
-		//1st check if ComponentDatabaseService has the right component in its database and remove it if it does
-		if (ComponentDatabase::getInstance().removeComponents<componentType>(entityID))
-		{
-			size_t typeID = typeid(componentType).hash_code()
+		ComponentDatabaseService::removeComponents<componentType>(this);
+	}
 
-			//if component successfully removed from ComponentDatabaseService, then erase from componentTypeVec
-				for (size_t i = 0; i < componentTypeVec.size();)
-				{
-					if (typeid(*components.at(i)).hash_code() == typeID)
-						components.erase(componentTypeVec.begin() + i);
-					else
-						i++;
-				}
-		}
+	//gets component of type componentType from this entity
+	template<typename componentType>
+	componentType* getComponent()
+	{
+		return ComponentDatabaseService::getComponent<componentType>(this);
+	}
+
+	//gets all components of type componentType from this entity
+	template<typename componentType>
+	std::vector<componentType*>* getComponents()
+	{
+		return ComponentDatabaseService::getComponents<componentType>(this);
 	}
 
 private:
+	friend class ComponentDatabaseService; //so that ComponentDatabaseService can have access to 'components' vector manipulation methods, that are 1) remove. 2) removeAllOfType. 3) insert
+
 	static std::vector<size_t> reusableIDPool;
 	static size_t IDCounter;
 
 	std::vector<Component*> components; //storage of all types of components the entity has
 	size_t entityID;
 	std::string entityName;
+
+	void remove(const Component* comp); //used by componentDatabase to remove components from this entity
+	void removeAllOfType(size_t compTypeID); //used by componentDatabase to remove components of certain type from this entity
+	void insert(Component* comp); //used by componentDatabase to insert components into this entity
 };
 

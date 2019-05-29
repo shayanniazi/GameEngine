@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "KeyCode.h"
 #include "ComponentDatabaseService.h" //obtains access to private members using friend class 'pass'
+#include "EntityDatbase.h"
 #include <iostream>
 
 CoreEngine* CoreEngine::instance = nullptr;
@@ -35,7 +36,9 @@ void CoreEngine::engineSetup()
 	HALService::initEngineSubSystems(); //set up SDL and shit (sub systems have to be initialized before window is created)
 	DisplayService::createWindow(); //create and setup SDL Window
 	InputService::initInputStates(); //initializes keyboard and mouse states
-	Game::init(); //initialize game state
+	ComponentDatabaseService::initializeStorage();
+	EntityDatbase::initializeStorage();
+	Game::init(); //initialize game state. Important: Database storages have to be initialized before game is intiialized
 	isRunning = true;
 }
 
@@ -70,7 +73,7 @@ void CoreEngine::update()
 void CoreEngine::lateUpdate()
 {
 	InputService::updatePrevInput();
-	ComponentDatabaseService::getInstance().cleanGarbage();
+	ComponentDatabaseService::cleanGarbage();
 }
 
 void CoreEngine::gameLoop()

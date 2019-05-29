@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "ECSEntity.h"
-#include "ComponentDatabaseService.h" //already included in ECSEntity.h but whatever
 #include "HealthComponent.h"
 #include "PhysicsComponent.h"
 #include <vector>
@@ -9,7 +8,6 @@
 //initialize game state
 void Game::init()
 {
-	ComponentDatabase::getInstance().
 	ECSEntity* nero = new ECSEntity("nero");
 	ECSEntity* dante = new ECSEntity("dante");
 
@@ -30,7 +28,7 @@ void Game::init()
 	nero->addComponent<HealthComponent>(haaa);
 	dante->addComponent<HealthComponent>(a);
 
-	std::vector<HealthComponent>& healths = ComponentDatabase::getInstance().getAllComponents<HealthComponent>();
+	const std::vector<HealthComponent>& healths = ComponentDatabase::getAllComponents<HealthComponent>();
 
 	nero->addComponent<PhysicsComponent>(p1);
 	dante->addComponent<PhysicsComponent>(p2);
@@ -38,15 +36,10 @@ void Game::init()
 	for (size_t i = 0; i < healths.size(); i++)
 		std::cout << healths.at(i).currentHealth << " AND ADDRESS: " << &(healths.at(i)) << std::endl;
 
-	//eg of retrieving 1st component with specific entityID 
-	health = ComponentDatabase::getInstance().getComponent<HealthComponent>(nero->getEntityID());
-	if (health)
-		std::cout << health->currentHealth << std::endl;
-	else
-		std::cout << "null pointer it was " << std::endl;
+
+	HealthComponent* ass = new HealthComponent();
+	delete ass;
 	
-	//ComponentDatabaseService::getInstance().removeComponents<HealthComponent>(nero->getEntityID());
-	//ComponentDatabaseService::getInstance().removeAllComponents<HealthComponent>();
 }
 
 //tell SystemManager to update all systems

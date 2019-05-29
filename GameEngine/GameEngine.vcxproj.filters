@@ -69,10 +69,10 @@
     <ClCompile Include="ComponentDatabaseService.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentDatabase.cpp">
+    <ClCompile Include="EntityDatbase.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="EntityDatbase.cpp">
+    <ClCompile Include="ComponentDatabase.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
   </ItemGroup>

@@ -20,6 +20,9 @@ ECSEntity::ECSEntity(std::string entityName)
 		entityID = reusableIDPool.front();
 		reusableIDPool.erase(reusableIDPool.begin());
 	}
+
+	this->entityName = entityName;
+	EntityDatbase::registerEntity(this);
 }
 
 ECSEntity::~ECSEntity()
@@ -31,7 +34,42 @@ ECSEntity::~ECSEntity()
 	for (size_t i = 0; i < components.size(); i++)
 		components.at(i)->entityID = 0;
 
-	std::cout << "Entity with ID: " << entityID << " successfully tagged for removal " << std::endl;
+	std::cout << "Entity '" << entityName <<"' with ID: " << entityID << " successfully tagged for removal " << std::endl;
+
+	EntityDatbase::deleteEntity(this);
+
+}
+
+//remove component* from this entities components vector
+void ECSEntity::remove(const Component* comp)
+{
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		//if both point to the same location in a component database
+		if (comp == components.at(i))
+		{
+			components.erase(components.begin() + i);
+			break;
+		}			
+	}
+}
+
+//removes all components from entity that have certain componentTypeID
+void ECSEntity::removeAllOfType(size_t compTypeID)
+{
+	for (size_t j = 0; j < components.size(); j++)
+	{
+		if (components.at(j)->getTypeID() == compTypeID)
+			components.erase(components.begin() + j);
+		else
+			j++;
+	}
+}
+
+//insert component* into this entities components vector
+void ECSEntity::insert(Component* comp)
+{
+	components.push_back(comp);
 }
 
 size_t ECSEntity::getEntityID()
