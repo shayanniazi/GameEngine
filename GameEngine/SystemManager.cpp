@@ -12,6 +12,15 @@ void SystemManager::initializeStorage()
 
 void SystemManager::registerSystem(System* system)
 {
+	for (size_t i = 0; i < systemsVector->size(); i++)
+	{
+		if (systemsVector->at(i) == system)
+		{
+			std::cout << "System " << typeid(*system).name() << " of same address already exists in system database" << std::endl;
+			return;
+		}
+	}
+
 	systemsVector->push_back(system);
 	std::cout << "System " << typeid(*system).name() << " successfully registered into system database" << std::endl;
 }
@@ -28,6 +37,8 @@ void SystemManager::removeSystem(System* system)
 			return;
 		}
 	}
+	std::cout << "System " << typeid(*system).name() << " could not be removed, as it was not in system database" << std::endl;
+
 }
 
 //Called by GameService::udpate()

@@ -27,6 +27,7 @@
     <ClCompile Include="EntityDatabase.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameService.cpp" />
+    <ClCompile Include="HealthSystem.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputService.cpp" />
     <ClCompile Include="KeyCode.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameService.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HealthSystem.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputService.h" />
     <ClInclude Include="KeyCode.h" />

@@ -128,7 +128,7 @@ private:
 
 	//returns all components of type componentType
 	template<typename componentType>
-	static const std::vector<componentType>& getAllComponents()
+	static std::vector<componentType>& getAllComponents()
 	{
 		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
 		Utilities::isChildOf<componentType, Component>();

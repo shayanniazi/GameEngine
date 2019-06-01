@@ -1,6 +1,5 @@
 #pragma once
-
-class Component; //forward declaration
+#include "Component.h"
 
 class PhysicsComponent : public Component
 {

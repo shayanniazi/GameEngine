@@ -8,7 +8,7 @@ class ComponentDatabase
 {
 public:
 	template<typename componentType>
-	static const std::vector<componentType>& getAllComponents()
+	static std::vector<componentType>& getAllComponents()
 	{
 		return ComponentDatabaseService::getAllComponents<componentType>();
 	}

@@ -5,6 +5,7 @@
 #include <vector>
 #include "ComponentDatabase.h"
 #include "EntityDatabase.h"
+#include "HealthSystem.h"
 
 /*
 Little description on how to make a game with this framework:
@@ -17,8 +18,9 @@ Little description on how to make a game with this framework:
 2b) Call getComponents<>(entity) when you know the entity HAS said component, otherwise it might return a nullptr or an empty reference and the program
     may crash
 
-3) Create Systems (system pointers). They will automatically register themselves into the system database and will be updated automatically by the
-   Engine.
+3) Create Systems using constructors (system pointers). They will automatically register themselves into the system database and will be updated 
+   automatically by the Engine.
+   Order of instantiation for systems doesn't matter, since updating  takes place after game::init 
 
 */
 
@@ -30,27 +32,20 @@ void Game::init()
 	ECSEntity* dante = new ECSEntity("dante");
 	
 	HealthComponent* health = new HealthComponent();
-	HealthComponent* h3 = new HealthComponent();
-	HealthComponent* haaa = new HealthComponent();
-	HealthComponent* a = new HealthComponent();
+	HealthComponent* health2 = new HealthComponent();
+
 	PhysicsComponent* p1 = new PhysicsComponent();
-	PhysicsComponent* p2 = new PhysicsComponent();
 	
 	health->currentHealth = 101;
-	h3->currentHealth = 1;
-	haaa->currentHealth = 2;
-	a->currentHealth = 3;
+	health2 ->currentHealth = 1;
+
 	
 	nero->addComponent<HealthComponent>(health);
-	dante->addComponent<HealthComponent>(h3);
-	nero->addComponent<HealthComponent>(haaa);
-	dante->addComponent<HealthComponent>(a);
+	dante->addComponent<HealthComponent>(health2);
 	
 	const std::vector<HealthComponent>& healths = ComponentDatabase::getAllComponents<HealthComponent>();
 
 	nero->addComponent<PhysicsComponent>(p1);
-	//dante->addComponent<PhysicsComponent>(p2);
 
-	for (size_t i = 0; i < healths.size(); i++)
-		std::cout << healths.at(i).currentHealth << " AND OWNER: " << healths.at(i).getOwner()->getEntityName() << std::endl;
+	HealthSystem* healthSystem = new HealthSystem();
 }
