@@ -1,20 +1,21 @@
 #pragma once
+#include <iostream>
 
 class ECSEntity; //forward declaration
 
 class Component
 {
 public:
-	//Component();
-	//Component(size_t entityID);
-	
-	void operator delete(void* mem);
 	size_t getTypeID() const;
-	size_t entityID;
-	ECSEntity* entity = nullptr;
+	ECSEntity* const getOwner() const;
+	~Component();
 
 private:
-	size_t componentTypeID;
-	virtual ~Component();
+	friend class ComponentDatabaseService; 
+	friend class ECSEntity; 
 
+	ECSEntity* entity = nullptr;
+	size_t componentTypeID;
+	size_t entityID;
+	//void operator delete(void* mem);
 };

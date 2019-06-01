@@ -2,9 +2,11 @@
 #include <vector>
 #include <boost/container/flat_map.hpp>
 #include <iostream>
+#include <sstream> //contains ostringstream
 #include "Component.h"
+#include "Utilities.h"
 
-//STATIC CLASS
+//STATIC CLASS (composed mainly of static template functions)
 class ComponentDatabaseService
 {
 private:
@@ -40,8 +42,11 @@ private:
 		//retarget original component ptr to copied component in map
 		component = &(compVec->at(0));
 
-		//insert component copy into entitys own list after components been retargetted to componentDatabase vector location
+		//insert component copy into entitys own list after components been retargetted to componentDatabase vector location. Will set components owner and ID as well
 		entity->insert(component);		
+
+		//set entity of inserted component
+		//((Component*)component)->entity = entity;
 
 		//insert newly created component type vectors address into main components vector. Also, insert into pointer database
 		componentDB->insert(std::pair<void*, size_t>(compVec, typeid(*component).hash_code()));
@@ -105,7 +110,7 @@ private:
 					entity->insert(component);
 
 					//set entity of inserted component
-					((Component*)component)->entity = entity;
+					//((Component*)component)->entity = entity;
 
 					std::cout << "component of type: " << typeid(componentType).name() << " of entity: '"<< entity->entityName <<"' with ID: " << entity->entityID <<"' successfully inserted into component database" << std::endl;
 					return;
@@ -136,13 +141,24 @@ private:
 			{
 				//since we now know the type of the component is componentType
 				std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
+			
+				//update vector and remove all components with entityID = 0 (dead entities)
+				for (size_t j = 0; j < extractedVector->size();)
+				{
+					Component* extractedComponent = &extractedVector->at(j);
+					if (extractedComponent->entityID == 0)
+						extractedVector->erase(extractedVector->begin() + j);
+					else
+						j++;
+				}
+
 				return *extractedVector;
 			}
 		}
 		//if nothing is found then return empty placeholder component vector
 		std::cout << "Components of component type: '" << typeid(componentType).name() << "' not found, returning empty reference" << std::endl;
 		std::vector<componentType>* emptyVec = new std::vector<componentType>();
-		//store into eraseable pool
+		//store into garbage
 		garbage->push_back(emptyVec);
 		return *emptyVec;
 	}
@@ -178,8 +194,11 @@ private:
 			}
 		}
 		//if nothing is found then return empty placeholder component
-		std::cout << "Warning! Component of component type: '" << typeid(componentType).name() << "' of entity '" << entity->entityName << "' with ID: '" << entity->entityID << "' not found, returning nullptr" << std::endl;
-		return nullptr;
+		std::ostringstream exceptionMsg;
+		exceptionMsg <<  "Warning! Component of component type: '" << typeid(componentType).name() << "' of entity '" << entity->entityName << "' with ID: '" << entity->entityID << "' not found, returning nullptr";
+		throw std::runtime_error(exceptionMsg.str());
+		//std::cout << "Warning! Component of component type: '" << typeid(componentType).name() << "' of entity '" << entity->entityName << "' with ID: '" << entity->entityID << "' not found, returning nullptr" << std::endl;
+		//return nullptr;
 	}
 
 	//returns all components of componentType that is linked to entity with entityID
@@ -215,6 +234,8 @@ private:
 				}
 			}
 		}
+		std::cout << "Warning! Components of component type: '" << typeid(componentType).name() << "' of entity '" << entity->entityName << "' with ID: '" << entity->entityID << "' not found, returning temporary empty vector" << std::endl;
+		//if componentNOT found then only insert into garbage asshole
 		garbage->push_back(entityVec);
 		return entityVec;
 	}
@@ -255,6 +276,8 @@ private:
 				}
 			}
 		}
+
+		std::cout << "Cannot remove component of type: '" << typeid(componentType).name() << "' of entity '" << entity->entityName << "' with ID: '" << entity->entityID << "' as it does not exist in component database" << std::endl;
 	}
 
 	//removes all components of componentType with entityID
@@ -338,43 +361,5 @@ private:
 		}
 		//assuming appropriate type was not located in DB
 		std::cout << "Component of type: " << typeid(componentType).name() << " was not found in the component database, therefore unabale to fulfill removal request" << std::endl;
-	}
-
-	//removes particular component whose handle (pointer) we have 
-	template<typename componentType>
-	static void removeComponent(componentType* component)
-	{
-		//do a pre check to make sure that component is of the correct type (i.e derived component type, and no other class)
-		Utilities::isChildOf<componentType, Component>();
-
-		//loop through component database
-		for (boost::container::flat_map<void*, size_t>::iterator i = componentDB->begin(); i != componentDB->end(); i++)
-		{
-			//check if the component map contains the right type
-			if (i->second == typeid(componentType).hash_code())
-			{
-				//since we now know the type of the component is componentType
-				std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
-
-				//loop through each component inside extractedVector
-				for (size_t j = 0; j < extractedVector->size(); j++)
-				{
-					//extract component out of vector one by one
-					componentType* extractedComponent = &extractedVector->at(j);
-
-					//check if both point to same location, if yes, then delete component
-					if (component == extractedComponent)
-					{
-						//before removing from component, make sure to remove the entitys component that points to same thing as extractedComp
-						((Component*)component)->entity->remove(extractedComponent);
-
-						//now remove component from the database
-						extractedVector->erase(extractedVector->begin() + j);
-						std::cout << "Component of component type: '" << typeid(componentType).name() << "' of entity '" << entity->entityName << "' with ID: '" << entity->entityID << "' erased from component database" << std::endl;
-						return;
-					}
-				}
-			}
-		}
 	}
 };

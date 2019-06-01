@@ -1,13 +1,15 @@
 #include "CoreEngine.h"
 #include "HALService.h"
+#include "SDL.h"
 #include "DisplayService.h"
 #include "InputService.h"
-#include "Game.h"
+#include "GameService.h"
 #include "Time.h"
 #include "Input.h"
 #include "KeyCode.h"
 #include "ComponentDatabaseService.h" //obtains access to private members using friend class 'pass'
-#include "EntityDatbase.h"
+#include "EntityDatabase.h"
+#include "SystemManager.h"
 #include <iostream>
 
 CoreEngine* CoreEngine::instance = nullptr;
@@ -37,8 +39,9 @@ void CoreEngine::engineSetup()
 	DisplayService::createWindow(); //create and setup SDL Window
 	InputService::initInputStates(); //initializes keyboard and mouse states
 	ComponentDatabaseService::initializeStorage();
-	EntityDatbase::initializeStorage();
-	Game::init(); //initialize game state. Important: Database storages have to be initialized before game is intiialized
+	EntityDatabase::initializeStorage();
+	SystemManager::initializeStorage();
+	GameService::init(); //initialize game state. Important: Database storages have to be initialized before game is intiialized
 	isRunning = true;
 }
 
@@ -67,7 +70,7 @@ void CoreEngine::update()
 	if (Input::isMouseButtonHeld(KeyCode::rightMouse))
 		std::cout << "Pressing right mouse" << std::endl;
 
-	Game::update();
+	GameService::update();
 }
 
 void CoreEngine::lateUpdate()

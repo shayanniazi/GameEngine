@@ -1,5 +1,7 @@
 #pragma once
-#include "KeyCode.h"
+//#include "KeyCode.h"
+
+class KeyCode; //forward declaration
 
 class Input
 {

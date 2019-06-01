@@ -1,46 +1,39 @@
 #include "ECSEntity.h"
 #include "Game.h"
-#include "EntityDatbase.h"
+#include "EntityDatabase.h"
 
-size_t ECSEntity::IDCounter = 1;
-std::vector<size_t> ECSEntity::reusableIDPool({}); //initialized to empty vector '{ }'
+ECSEntity::~ECSEntity()
+{
+}
 
 ECSEntity::ECSEntity(std::string entityName)
 {
 	components.reserve(100);
 
-	//if reusable pool is empty, then generate an ID
-	if (reusableIDPool.empty())
-	{
-		entityID = IDCounter;
-		IDCounter++;
-	}
-	else //if not empty, then retrieve fiset entityID 
-	{
-		entityID = reusableIDPool.front();
-		reusableIDPool.erase(reusableIDPool.begin());
-	}
-
 	this->entityName = entityName;
-	EntityDatbase::registerEntity(this);
+	
+	//will generate new ID for entity as well as register entity into database
+	EntityDatabase::registerEntity(this); 
 }
 
-ECSEntity::~ECSEntity()
+void ECSEntity::destroy()
 {
-	//put ID back into reusable ID pool
-	reusableIDPool.push_back(entityID);
-
 	//flag every component attached to this entity to be 0 (i.e to be deleted)
 	for (size_t i = 0; i < components.size(); i++)
+	{
+		components.at(i)->entity = nullptr;
 		components.at(i)->entityID = 0;
+	}
 
-	std::cout << "Entity '" << entityName <<"' with ID: " << entityID << " successfully tagged for removal " << std::endl;
+	std::cout << "Entity '" << entityName << "' with ID: " << entityID << " successfully tagged for removal " << std::endl;
 
-	EntityDatbase::deleteEntity(this);
+	//put ID back into reusable pool as well as removes entity from database
+	EntityDatabase::deleteEntity(this);
 
+	delete this;
 }
 
-//remove component* from this entities components vector
+//remove component* from this entities components vector. Called by componentDatabaseService in removeComponents<type>(entity) so that this entity can also remove that particular component from itself
 void ECSEntity::remove(const Component* comp)
 {
 	for (size_t i = 0; i < components.size(); i++)
@@ -50,7 +43,7 @@ void ECSEntity::remove(const Component* comp)
 		{
 			components.erase(components.begin() + i);
 			break;
-		}			
+		}
 	}
 }
 
@@ -66,9 +59,13 @@ void ECSEntity::removeAllOfType(size_t compTypeID)
 	}
 }
 
-//insert component* into this entities components vector
+//insert component* into this entities components vector. Called when new components is inserted into component database. Called by ComponentDatabaseService.addComponent<type>(entity, component)
 void ECSEntity::insert(Component* comp)
-{
+{	
+	//set this components entity & ID
+	comp->entity = this;
+	comp->entityID = entityID;
+
 	components.push_back(comp);
 }
 

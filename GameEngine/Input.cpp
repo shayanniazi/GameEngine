@@ -1,5 +1,6 @@
 #include "Input.h"
 #include "InputService.h"
+#include "KeyCode.h"
 
 bool Input::isKeyHeld(const KeyCode* const keyCode)
 {

@@ -10,28 +10,22 @@ Component::Component(size_t entityID)
 	this->entityID = entityID;
 }
 */
+/*
 void Component::operator delete(void* mem)
-{
-	
+{	
 	free(mem);
 }
-
-Component::~Component()
+*/
+ECSEntity* const Component::getOwner() const
 {
-
-	if (entity)
-	{
-		//entity->removeComponent<type>(this); 
-		ComponentDatabaseService::removeComponent<componentType>()
-
-	}
-
-	std::cout << "MY TURN MOTHERFUCKERF" << std::endl;
-
-
+	return entity;
 }
 
 size_t Component::getTypeID() const
 {
 	return typeid(*this).hash_code();
+}
+
+Component::~Component()
+{
 }

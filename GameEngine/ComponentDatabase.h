@@ -1,8 +1,9 @@
 #pragma once
 #include "ComponentDatabaseService.h" //obtains access to private members using friend class 'pass'
 #include <vector>
+#include <iostream>
 
-//STATIC CLASS
+//STATIC CLASS (interface to ComponentDatabaseService, composed mainly of static template functions)
 class ComponentDatabase
 {
 public:
@@ -39,11 +40,19 @@ public:
 		ComponentDatabaseService::removeComponents<componentType>(entity);
 	}
 
-	//gets component of type componentType from this entity
+	//gets component of type componentType from this entity. Undefined behavior if component not found.
 	template<typename componentType>
 	static componentType* getComponent(ECSEntity* entity)
 	{
-		return ComponentDatabaseService::getComponent<componentType>(entity);
+		try
+		{
+			return ComponentDatabaseService::getComponent<componentType>(entity);
+		}
+		catch (std::exception& e)
+		{
+			std::cout << "Runtime exception caught: " << e.what() << std::endl;
+		}
+			
 	}
 
 	//gets all components of type componentType from this entity

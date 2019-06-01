@@ -1,9 +1,9 @@
 #pragma once
-#include "Component.h"
+
+class Component; //forward declaration
 
 class PhysicsComponent : public Component
 {
 public:
-	//PhysicsComponent() {}
-	//PhysicsComponent(size_t entityID) : Component(entityID) {}
+
 };

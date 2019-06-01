@@ -4,18 +4,23 @@
 class ECSEntity; //forward declaration
 
 //STATIC CLASS
-class EntityDatbase
+class EntityDatabase
 {
 public:
-	static void registerEntity(ECSEntity* entity); // add entity to entitiesVector
-	static void deleteEntity(ECSEntity* entity); //removes all associated components of entity
-	static void cleanUp(); //removes and deletes all entities at the end of frame that are flagged with !isAlvie
+
 	static ECSEntity* getEntity(std::string entityName);
 	static ECSEntity* getEntity(size_t entityID);
+	static ECSEntity* getEntity(ECSEntity* entity);
 
 private:
 	friend class CoreEngine;
+	friend class ECSEntity;
 
+	static void registerEntity(ECSEntity* entity); // add entity to entitiesVector
+	static void deleteEntity(ECSEntity* entity); //removes all associated components of entity
 	static void initializeStorage();
+
+	static std::vector<size_t>* reusableIDPool;
+	static size_t IDCounter;
 	static std::vector<ECSEntity*>* entitiesVector; //contains entity ID's
 };

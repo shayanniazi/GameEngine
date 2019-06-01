@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{c9867d00-6989-407b-8d5d-3bb1b06e88a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{6bf32b4f-37c9-495a-9b6a-66ecf436a77c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -69,10 +72,16 @@
     <ClCompile Include="ComponentDatabaseService.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="EntityDatbase.cpp">
+    <ClCompile Include="System.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentDatabase.cpp">
+    <ClCompile Include="SystemManager.cpp">
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="GameService.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityDatabase.cpp">
       <Filter>Source Files\ECS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,7 +131,19 @@
     <ClInclude Include="ComponentDatabaseService.h">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="EntityDatbase.h">
+    <ClInclude Include="System.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="TagComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager.h">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="GameService.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityDatabase.h">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>
