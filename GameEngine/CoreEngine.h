@@ -14,6 +14,7 @@ private:
 	void processInput();
 	void update();
 	void lateUpdate();
+	void render();
 
 	bool isRunning = false;
 	double deltaTime;

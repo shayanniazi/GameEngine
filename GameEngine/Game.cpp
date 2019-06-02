@@ -5,6 +5,7 @@
 #include <vector>
 #include "ComponentDatabase.h"
 #include "EntityDatabase.h"
+#include "SystemManager.h"
 #include "HealthSystem.h"
 
 /*
@@ -18,9 +19,10 @@ Little description on how to make a game with this framework:
 2b) Call getComponents<>(entity) when you know the entity HAS said component, otherwise it might return a nullptr or an empty reference and the program
     may crash
 
-3) Create Systems using constructors (system pointers). They will automatically register themselves into the system database and will be updated 
+3) Create Systems using SystemManager. They will register themselves into the system database and will be updated 
    automatically by the Engine.
-   Order of instantiation for systems doesn't matter, since updating  takes place after game::init 
+   Order of instantiation for systems doesn't have an effect on components or entities having to be 
+   initialized before systems, since updating  takes place after game::init 
 
 */
 
@@ -47,5 +49,5 @@ void Game::init()
 
 	nero->addComponent<PhysicsComponent>(p1);
 
-	HealthSystem* healthSystem = new HealthSystem();
+	SystemManager::registerSystem<HealthSystem>();
 }

@@ -3,6 +3,7 @@
 
 size_t ComponentDatabaseService::maxEntities = 100000;
 size_t ComponentDatabaseService::maxComponentTypes = 10000;
+bool ComponentDatabaseService::removeDeadComponents = false;
 
 boost::container::flat_map<void*, size_t>* ComponentDatabaseService::componentDB = new boost::container::flat_map<void*, size_t>();
 std::vector<void*>* ComponentDatabaseService::garbage = new std::vector<void*>();

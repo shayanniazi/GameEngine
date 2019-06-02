@@ -25,6 +25,9 @@ void ECSEntity::destroy()
 		components.at(i)->entityID = 0;
 	}
 
+	//for the frame destroy() is called, remove all dead components whenever a system loops over a set of components
+	ComponentDatabaseService::removeDeadComponents = true;
+
 	std::cout << "Entity '" << entityName << "' with ID: " << entityID << " successfully tagged for removal " << std::endl;
 
 	//put ID back into reusable pool as well as removes entity from database

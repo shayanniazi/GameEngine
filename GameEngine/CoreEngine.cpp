@@ -77,6 +77,12 @@ void CoreEngine::lateUpdate()
 {
 	InputService::updatePrevInput();
 	ComponentDatabaseService::cleanGarbage();
+	ComponentDatabaseService::removeDeadComponents = false;
+}
+
+void CoreEngine::render()
+{
+	DisplayService::updateWindow();
 }
 
 void CoreEngine::gameLoop()
@@ -97,7 +103,7 @@ void CoreEngine::gameLoop()
 		processInput();
 		update();
 		lateUpdate();
-		//render();
+		render();
 
 		while (deltaAccumulator >= frameCap)
 		{

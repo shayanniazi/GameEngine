@@ -19,6 +19,7 @@ private:
 	static size_t maxComponentTypes;
 	static boost::container::flat_map<void*, size_t>* componentDB; //address holder OR container of base pointers of all unique component type vectors (eg, components.at(0) may hold base addr of 1st pos component out of all pos components). the value part is the type of component the vector is
 	static std::vector<void*>* garbage; //this contains pointers to vectors that are returned to user upon calling 'getComponent' functions mainly. If a returned vector is empty, it will be flagged to be destroyed at end of each frame
+	static bool removeDeadComponents;
 
 	static void cleanGarbage(); //memory leak cleanup
 	static void initializeStorage(); //reserve memory for garbage and componentDB maps
@@ -143,13 +144,16 @@ private:
 				std::vector<componentType>* extractedVector = (std::vector<componentType>*) i->first;
 			
 				//update vector and remove all components with entityID = 0 (dead entities)
-				for (size_t j = 0; j < extractedVector->size();)
+				if (removeDeadComponents)
 				{
-					Component* extractedComponent = &extractedVector->at(j);
-					if (extractedComponent->entityID == 0)
-						extractedVector->erase(extractedVector->begin() + j);
-					else
-						j++;
+					for (size_t j = 0; j < extractedVector->size();)
+					{
+						Component* extractedComponent = &extractedVector->at(j);
+						if (extractedComponent->entityID == 0)
+							extractedVector->erase(extractedVector->begin() + j);
+						else
+							j++;
+					}
 				}
 
 				return *extractedVector;

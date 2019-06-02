@@ -3,6 +3,8 @@
 #include "CoreEngine.h"
 #include <iostream>
 #include <vector>
+#include "HealthComponent.h"
+#include "Component.h"
 
 int main(int argc, char** argv)
 {	

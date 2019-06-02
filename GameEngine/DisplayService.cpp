@@ -1,6 +1,5 @@
 #include "DisplayService.h"
 
-DisplayService* DisplayService::instance = nullptr;
 SDL_Window* DisplayService::window = nullptr;
 int DisplayService::screenHeight = 600;
 int DisplayService::screenWidth = 800;
@@ -20,4 +19,9 @@ void DisplayService::destroyWindow()
 {
 	SDL_DestroyWindow(window);
 	window = nullptr;
+}
+
+void DisplayService::updateWindow()
+{
+	SDL_UpdateWindowSurface(window);
 }
