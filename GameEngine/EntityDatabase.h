@@ -13,7 +13,7 @@ public:
 	static ECSEntity* getEntity(ECSEntity* entity);
 
 private:
-	friend class CoreEngine;
+	friend class GameService; //needs to initialize storage i.e reserve space (entitiesVector)
 	friend class ECSEntity;
 
 	static void registerEntity(ECSEntity* entity); // add entity to entitiesVector

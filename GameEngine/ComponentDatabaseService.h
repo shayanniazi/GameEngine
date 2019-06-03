@@ -13,6 +13,7 @@ private:
 	friend class ComponentDatabase;
 	friend class ECSEntity;
 	friend class CoreEngine;
+	friend class GameService;
 	friend class Component;
 
 	static size_t maxEntities; //size of each individual component cell (eg 100,000 position components can exist only, after which cache thrashing will occur, albeit temporarily)

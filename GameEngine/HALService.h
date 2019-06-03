@@ -5,5 +5,7 @@ class HALService
 {
 public:
 	static void initEngineSubSystems();
+private:
+	static void initOpenGL();
 };
 

@@ -5,7 +5,7 @@
 
 void HealthSystem::update()
 {
-	const std::vector<HealthComponent>& healths = ComponentDatabase::getAllComponents<HealthComponent>();
+	std::vector<HealthComponent>& healths = ComponentDatabase::getAllComponents<HealthComponent>();
 
 	for (size_t i = 0; i < healths.size(); i++)
 	{

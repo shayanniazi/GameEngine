@@ -36,6 +36,7 @@
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="TagComponent.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AC473835-AE69-4BAC-A77A-69BFD0764989}</ProjectGuid>
@@ -122,12 +124,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\SDL Library\SDL2-2.0.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\SDL Library\SDL2-2.0.9\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\GLEW;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,13 +146,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\SDL Library\SDL2-2.0.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\SDL Library\SDL2-2.0.9\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\GLEW;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

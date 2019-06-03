@@ -38,10 +38,7 @@ void CoreEngine::engineSetup()
 	HALService::initEngineSubSystems(); //set up SDL and shit (sub systems have to be initialized before window is created)
 	DisplayService::createWindow(); //create and setup SDL Window
 	InputService::initInputStates(); //initializes keyboard and mouse states
-	ComponentDatabaseService::initializeStorage();
-	EntityDatabase::initializeStorage();
-	SystemManager::initializeStorage();
-	GameService::init(); //initialize game state. Important: Database storages have to be initialized before game is intiialized
+	GameService::init(); //initialize game state as well as allocate storages for ECS management classes (ComponentDatabaseService, EntityDatabase, SystemManager)
 	isRunning = true;
 }
 
