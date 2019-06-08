@@ -10,9 +10,15 @@ void GameService::init()
 	EntityDatabase::initializeStorage();
 	SystemManager::initializeStorage();
 	Game::init();
+	//initialize a few systems here like render system, animation system and stuff
 }
 
 void GameService::update()
 {
 	SystemManager::updateSystems();
+}
+
+void GameService::draw()
+{
+	SystemManager::drawSystems();
 }

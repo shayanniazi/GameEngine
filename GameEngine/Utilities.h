@@ -1,4 +1,8 @@
 #pragma once
+#include <string>
+
+class Mesh;
+
 class Utilities
 {
 public:
@@ -12,4 +16,7 @@ public:
 		static_assert(T_DerivedFromComponent, "derivedType should be derived from baseType as: '<derivedType, baseType>");
 		static_assert(!T_is_Component, "function template parameters cannot be same, they have to be as: '<derivedType, baseType>");
 	}
+
+	static std::string readFile(const std::string& filePath);
+	static Mesh loadOBJ(const std::string& filePath);
 };

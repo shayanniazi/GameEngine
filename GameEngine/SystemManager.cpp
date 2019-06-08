@@ -16,3 +16,9 @@ void SystemManager::updateSystems()
 	for (size_t i = 0; i < systemsVector->size(); i++)
 		systemsVector->at(i)->update();
 }
+
+void SystemManager::drawSystems()
+{
+	for (size_t i = 0; i < systemsVector->size(); i++)
+		systemsVector->at(i)->draw();
+}

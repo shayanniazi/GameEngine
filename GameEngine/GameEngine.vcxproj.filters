@@ -37,6 +37,21 @@
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{6ed03924-d54a-4204-8b59-2b1d2890ce6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{b4998d12-7da3-4ae4-8818-04c543a45546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingEngine">
+      <UniqueIdentifier>{cce9bda2-9f68-4522-90a0-3d5b70f4de60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderingEngine">
+      <UniqueIdentifier>{6a3bfb5f-b415-4dbc-9b17-50e8b3d312b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingEngine\Shaders">
+      <UniqueIdentifier>{48cbc98b-a089-43ac-b721-8864286e706c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingEngine\Models">
+      <UniqueIdentifier>{a4f742c9-4630-41dc-9672-54bfaadeb8e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -93,6 +108,24 @@
     <ClCompile Include="Vec3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsSetup.cpp">
+      <Filter>Source Files\RenderingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderService.cpp">
+      <Filter>Source Files\RenderingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\RenderingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>Source Files\RenderingEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyCode.h">
@@ -109,9 +142,6 @@
     </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities.h">
-      <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="DisplayService.h">
       <Filter>Header Files\Engine</Filter>
@@ -161,5 +191,37 @@
     <ClInclude Include="Vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsSetup.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderService.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelLoader.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="basic.vertex">
+      <Filter>Source Files\RenderingEngine\Shaders</Filter>
+    </None>
+    <None Include="basic.fragment">
+      <Filter>Source Files\RenderingEngine\Shaders</Filter>
+    </None>
+    <None Include="RandomModel.blend">
+      <Filter>Source Files\RenderingEngine\Models</Filter>
+    </None>
   </ItemGroup>
 </Project>

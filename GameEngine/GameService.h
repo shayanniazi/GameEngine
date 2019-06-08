@@ -6,4 +6,5 @@ class GameService
 public:
 	static void init();
 	static void update();
+	static void draw();
 };

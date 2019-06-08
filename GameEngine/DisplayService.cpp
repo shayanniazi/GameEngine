@@ -3,7 +3,6 @@
 #include "glew.h"
 
 SDL_Window* DisplayService::window = nullptr;
-SDL_GLContext DisplayService::renderingContext = nullptr;
 
 int DisplayService::screenHeight = 600;
 int DisplayService::screenWidth = 800;
@@ -23,19 +22,6 @@ void DisplayService::createWindow()
 		std::cout << "Could not create openGL window: " << SDL_GetError() << std::endl;
 		return;
 	}
-
-	//set rendering context
-	renderingContext = SDL_GL_CreateContext(window);
-
-	if (renderingContext == NULL)
-	{
-		std::cout << "Error in setting openGL rendering context: " << SDL_GetError() << std::endl;
-		return;
-	}
-
-	glClearColor(0.0, 0.0, 0.5, 1.0);; //set color values
-	glClear(GL_COLOR_BUFFER_BIT); //set back buffer with this shit
-	SDL_GL_SwapWindow(window); //swap back and front buffers so that its visible now
 }
 
 void DisplayService::destroyWindow()

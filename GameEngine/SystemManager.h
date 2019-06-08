@@ -58,5 +58,6 @@ private:
 
 	static void initializeStorage();
 	static void updateSystems();
+	static void drawSystems();
 	static std::vector<System*>* systemsVector;
 };

@@ -13,3 +13,8 @@ void HealthSystem::update()
 		//std::cout << "Entity: " << healths.at(i).getOwner()->getEntityName() << " and its health: " << healths.at(i).currentHealth <<std::endl;
 	}
 }
+
+void HealthSystem::draw()
+{
+
+}
