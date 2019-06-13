@@ -1,5 +1,5 @@
 # GameEngine
-ECS based game engine
+ECS based game engine.
 Using openGL as the rendering API and SDL for low level input and window handling
 
 Each entity is just an ID that has information about where it's components are stored in the 'component database'. The actual 
