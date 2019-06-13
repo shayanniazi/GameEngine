@@ -11,5 +11,5 @@ Systems:
 2) RenderingSystem.cpp
 
 Components:
-1) HealthComponent
-2) TransformComponent
+1) HealthComponent.h
+2) TransformComponent.h
