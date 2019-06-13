@@ -1,5 +1,9 @@
 # GameEngine
 ECS based game engine
+Using openGL as the rendering API and SDL for low level input and window handling
+
+Each entity is just an ID that has information about where it's components are stored in the 'component database'. The actual 
+data of the entities components are stored in contiguous blocks of memory for cache efficiency. 
 
 See 'Game.cpp' for more information on how to create entities, components and systems, as well as to have a quick overview of
 the general layout of the engine
