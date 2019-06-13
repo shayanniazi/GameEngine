@@ -17,3 +17,8 @@ Systems:
 Components:
 1) HealthComponent.h
 2) TransformComponent.h
+
+To see how the components are stored, check out :
+1) ComponentDatabaseService.cpp & ComponentDatabaseService.h
+2) ComponentDatabase.h
+3) ECSEntity.h
