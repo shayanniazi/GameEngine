@@ -52,12 +52,21 @@
     <Filter Include="Source Files\RenderingEngine\Models">
       <UniqueIdentifier>{a4f742c9-4630-41dc-9672-54bfaadeb8e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\MathEngine">
+      <UniqueIdentifier>{74206198-7a35-4f04-94ff-7f94d359daf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MathEngine">
+      <UniqueIdentifier>{ac4be728-8627-44b8-8f5e-8c64485e37f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\InputEngine">
+      <UniqueIdentifier>{1a87afd3-dfaa-4f45-a23a-1268d3dd6d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputEngine">
+      <UniqueIdentifier>{aa12c537-da6a-4786-aefb-d55c1565faf8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyCode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
@@ -81,9 +90,6 @@
     <ClCompile Include="InputService.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,14 +111,8 @@
     <ClCompile Include="HealthSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Vec3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Utilities.cpp">
       <Filter>Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Vec2.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsSetup.cpp">
       <Filter>Source Files\RenderingEngine</Filter>
@@ -126,11 +126,35 @@
     <ClCompile Include="ModelLoader.cpp">
       <Filter>Source Files\RenderingEngine</Filter>
     </ClCompile>
+    <ClCompile Include="RenderingSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\RenderingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingService.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Source Files\MathEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3.cpp">
+      <Filter>Source Files\MathEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyCode.cpp">
+      <Filter>Source Files\InputEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files\InputEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mat4.cpp">
+      <Filter>Source Files\MathEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\RenderingEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KeyCode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
@@ -157,9 +181,6 @@
     </ClInclude>
     <ClInclude Include="InputService.h">
       <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
@@ -188,17 +209,8 @@
     <ClInclude Include="HealthSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Vec3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsSetup.h">
       <Filter>Header Files\RenderingEngine</Filter>
@@ -212,6 +224,42 @@
     <ClInclude Include="ModelLoader.h">
       <Filter>Header Files\RenderingEngine</Filter>
     </ClInclude>
+    <ClInclude Include="RenderingSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingService.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Header Files\MathEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3.h">
+      <Filter>Header Files\MathEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\MathEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mat4.h">
+      <Filter>Header Files\MathEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\InputEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCode.h">
+      <Filter>Header Files\InputEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.vertex">
@@ -220,7 +268,19 @@
     <None Include="basic.fragment">
       <Filter>Source Files\RenderingEngine\Shaders</Filter>
     </None>
-    <None Include="RandomModel.blend">
+    <None Include="Rooster.obj">
+      <Filter>Source Files\RenderingEngine\Models</Filter>
+    </None>
+    <None Include="Cube.obj">
+      <Filter>Source Files\RenderingEngine\Models</Filter>
+    </None>
+    <None Include="Triangle.obj">
+      <Filter>Source Files\RenderingEngine\Models</Filter>
+    </None>
+    <None Include="Boat.obj">
+      <Filter>Source Files\RenderingEngine\Models</Filter>
+    </None>
+    <None Include="C:\Users\the\Downloads\source\scene.fbx">
       <Filter>Source Files\RenderingEngine\Models</Filter>
     </None>
   </ItemGroup>

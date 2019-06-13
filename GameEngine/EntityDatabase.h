@@ -7,7 +7,7 @@ class ECSEntity; //forward declaration
 class EntityDatabase
 {
 public:
-
+	//static ECSEntity* emptyEntity;
 	static ECSEntity* getEntity(std::string entityName);
 	static ECSEntity* getEntity(size_t entityID);
 	static ECSEntity* getEntity(ECSEntity* entity);

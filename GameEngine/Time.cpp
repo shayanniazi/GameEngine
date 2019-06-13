@@ -2,6 +2,8 @@
 #include <time.h>
 #include <Windows.h>
 
+double Time::deltaTime = 0;
+
 double Time::getTime()
 {
 	LARGE_INTEGER time;
@@ -10,4 +12,9 @@ double Time::getTime()
 	QueryPerformanceFrequency(&freq);
 	double ffreq = (double)freq.QuadPart;
 	return time.QuadPart / ffreq;
+}
+
+void Time::setDeltaTime(double value)
+{
+	deltaTime = value;
 }

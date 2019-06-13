@@ -2,6 +2,8 @@
 #include "Utilities.h"
 #include <iostream>
 
+size_t ShaderService::activeShaderProgram = 0;
+
 //create and use shader program from user defined vertex and fragment shaders
 void ShaderService::create(const std::string& vertexPath, const std::string& fragmentPath)
 {
@@ -33,11 +35,13 @@ size_t ShaderService::createShaderProgram(size_t vertexShader, size_t fragmentSh
 	int  success;
 	char infoLog[512];
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) 
+	if (!success)
 	{
 		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR IN SHADER PROGRAM LINKING.\n" << infoLog << std::endl;
 	}
+	else
+		activeShaderProgram = shaderProgram;
 
 	return shaderProgram;
 }
@@ -67,4 +71,9 @@ size_t ShaderService::compileShader(const std::string& shaderPath, GLenum shader
 	}
 
 	return shader;
+}
+
+size_t ShaderService::getActiveShaderProgram()
+{
+	return activeShaderProgram;
 }

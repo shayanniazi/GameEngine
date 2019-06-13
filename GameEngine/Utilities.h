@@ -18,5 +18,4 @@ public:
 	}
 
 	static std::string readFile(const std::string& filePath);
-	static Mesh loadOBJ(const std::string& filePath);
 };

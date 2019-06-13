@@ -44,6 +44,9 @@ void GraphicsSetup::initOpenGL(SDL_Window* window, float version)
 	//Since some graphics cards think a lot of the functions are experimental, so this is needed in that situation
 	glewExperimental = GL_TRUE;
 
+	//enable depth testing
+	glEnable(GL_DEPTH_TEST);
+
 	std::cout << "openGL version in use: " << glGetString(GL_VERSION) << std::endl;
 }
 

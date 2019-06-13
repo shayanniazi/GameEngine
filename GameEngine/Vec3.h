@@ -3,6 +3,8 @@
 class Vec3
 {
 public:
+	static const size_t dimensions = 3;
+
 	float x, y, z;
 	
 	Vec3();

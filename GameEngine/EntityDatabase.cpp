@@ -2,6 +2,8 @@
 #include "ECSEntity.h"
 #include "Game.h"
 
+//ECSEntity* EntityDatabase::emptyEntity = new ECSEntity("null");
+
 std::vector<ECSEntity*>* EntityDatabase::entitiesVector = new std::vector<ECSEntity*>();
 std::vector<size_t>* EntityDatabase::reusableIDPool = new std::vector<size_t>();
 size_t EntityDatabase::IDCounter = 1;

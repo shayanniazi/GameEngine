@@ -1,11 +1,20 @@
 #include "DisplayService.h"
 #include <iostream>
 #include "glew.h"
+#include "RenderingService.h"
 
 SDL_Window* DisplayService::window = nullptr;
 
 int DisplayService::screenHeight = 600;
 int DisplayService::screenWidth = 800;
+
+float DisplayService::FOV = 30;
+float DisplayService::nearClippingPlane= 0.01f;
+float DisplayService::farClippingPlane = 100;
+float DisplayService::leftClippingPlane = 100;
+float DisplayService::rightClippingPlane = 100;
+float DisplayService::topClippingPlane = 100;
+float DisplayService::bottomClippingPlane = 100;
 
 SDL_Window* DisplayService::getWindowHandle()
 {
@@ -22,9 +31,12 @@ void DisplayService::createWindow()
 		std::cout << "Could not create openGL window: " << SDL_GetError() << std::endl;
 		return;
 	}
+
+	//default projection for display
+	RenderingService::usePerspectiveProjection();
 }
 
-void DisplayService::destroyWindow()
+void DisplayService::destroyWindow(SDL_Window* window)
 {
 	SDL_DestroyWindow(window);
 	window = nullptr;

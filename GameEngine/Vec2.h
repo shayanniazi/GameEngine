@@ -2,6 +2,7 @@
 class Vec2
 {
 public:
+	static const size_t dimensions = 2;
 	float x, y;
 
 	Vec2();

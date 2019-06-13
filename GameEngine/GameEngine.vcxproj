@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentDatabaseService.cpp" />
     <ClCompile Include="CoreEngine.cpp" />
@@ -34,8 +35,12 @@
     <ClCompile Include="KeyCode.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="HALService.cpp" />
+    <ClCompile Include="Mat4.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="RenderingService.cpp" />
+    <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="ShaderService.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemManager.cpp" />
@@ -45,6 +50,7 @@
     <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentDatabase.h" />
     <ClInclude Include="ComponentDatabaseService.h" />
@@ -60,15 +66,21 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputService.h" />
     <ClInclude Include="KeyCode.h" />
+    <ClInclude Include="Mat4.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="HALService.h" />
+    <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="RenderingService.h" />
+    <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="ShaderService.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="TagComponent.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
@@ -77,7 +89,11 @@
   <ItemGroup>
     <None Include="basic.fragment" />
     <None Include="basic.vertex" />
-    <None Include="RandomModel.blend" />
+    <None Include="Boat.obj" />
+    <None Include="C:\Users\the\Downloads\source\scene.fbx" />
+    <None Include="Cube.obj" />
+    <None Include="Rooster.obj" />
+    <None Include="Triangle.obj" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AC473835-AE69-4BAC-A77A-69BFD0764989}</ProjectGuid>
@@ -141,12 +157,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\GL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\ASSIMP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\GLEW;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\GLEW;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -167,13 +183,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\GL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\include\ASSIMP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\GLEW;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\C++ Projects\BoostLibrary\boost_1_70_0\stage\lib;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\GLEW;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\SDL;D:\C++ Projects\GameEngine\GameEngine\Dependencies\lib\ASSIMP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
